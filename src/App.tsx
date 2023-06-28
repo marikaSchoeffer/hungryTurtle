@@ -1,12 +1,15 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-function App() {
+import { Box, Paper, Typography } from "@mui/material";
+
+
+export function App() {
   return (
-    <>
-      <h1>Hello Trutle!</h1>
-    </>
+    <Box>
+      <Paper>
+        <Typography>
+          Hello Trutle!
+        </Typography>
+        </Paper>
+    </Box>
   )
 }
 
-export default App
