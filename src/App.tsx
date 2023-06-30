@@ -1,97 +1,98 @@
 import { useState } from "react";
 
-import { Avatar, Box, Button, Input, Paper, TextField, Typography } from "@mui/material";
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Avatar, Box, Button, Paper, TextField, Typography } from "@mui/material";
+import { primaryColor } from "./style";
 
 export function App() {
   const [userMail, setUserMail] = useState("");
   const [userPassword, setUserPassword] = useState(""); 
 
-  const theme = createTheme({
-    palette: {
-      primary: {
-      
-        main: "#ec4c0c",
-      }
-    },
-  });
-
   return (
     <Box
       display="flex"
       width="100%"
+      height="100%"
       justifyContent="center"
       alignItems="center"
     >
-      <Paper>
-        <Box
+      <Paper 
+        style={{
+          width: "500px", 
+          padding: "10px",
+          margin: "10px"
+        }}
+        elevation={4}
+      >
+        <Box 
           display="flex"
           flexDirection="column"
           justifyContent="center"
           alignItems="center"
+          rowGap="30px"
         >
-          <Avatar
-            alt="A turtle with a baseball cap"
-            src="./image/hungryTurtle.png"
-            style={{
-              width:"100px",
-              height:"100px"
-            }}
-          />
-          <Typography
-            color="#ec4c0c"
-            variant="h5"
+          <Box
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            alignItems="center"
           >
-            Hungry Turtle
-          </Typography>
-        </Box>
-        <Box
-          display="flex"
-          flexDirection="column"
-         >
-          <TextField
-            type="email"
-            variant="outlined"
-            size="small"
-            style={{
-              padding: "10px",
-            }}
+            <Avatar
+              alt="A turtle with a baseball cap"
+              src="./image/hungryTurtle.png"
+              style={{
+                width:"100px",
+                height:"100px"
+              }}
+            />
+            <Typography
+              color = {primaryColor}
+              variant="h5"
+            >
+              Hungry Turtle
+            </Typography>
+          </Box>
+
+          <Box
+            display="flex"
+            flexDirection="column"
+            rowGap="20px"
+            width="100%"
           >
-            <Input 
+          
+            <TextField
+              type="email"
+              label="E-Mail"
+              variant="outlined"
+              color="primary"
               value={userMail}
               onChange={x => setUserMail(x.target.value)}
             />
-          </TextField>
 
-          <TextField
-            type="password"
-            variant="outlined"
-            size="small"
-            style={{
-              padding: "10px"
-            }}
-          >
-            <Input 
+            <TextField
+              type="password"
+              label="Passwort"
+              variant="outlined"
+              color="primary"
               value={userPassword}
               onChange={x => setUserPassword(x.target.value)}
-            />
-          </TextField>
-        </Box>
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          pb="10px"
-        >
-          <ThemeProvider theme={theme}>
+            /> 
+          
+          </Box>
+
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            pb="10px"
+          >
             <Button 
               color="primary"
               variant="outlined"
-              style={{ borderColor: "#ec4c0c"}}
+              style={{ borderColor: primaryColor}}
             >
               Login
             </Button>
-          </ThemeProvider>
+          </Box>
         </Box>
       </Paper>
     </Box>
