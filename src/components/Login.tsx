@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { Avatar, Box, Button, Paper, TextField, Typography } from "@mui/material";
 import { primaryColor } from "../style";
 
-
 export function Login() {
 
   const [userMail, setUserMail] = useState("");

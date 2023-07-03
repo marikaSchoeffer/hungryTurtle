@@ -8,6 +8,7 @@ export function App() {
       <Routes>
         <Route path="/" element={<Login/>}/>
         <Route path="/overview" element={<Overview/>}/>
+        <Route path="*" element={<Login/>}/>
       </Routes>
     </BrowserRouter>
   )
