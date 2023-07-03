@@ -11,11 +11,22 @@ export function Login() {
   const [userMail, setUserMail] = useState("");
   const [userPassword, setUserPassword] = useState(""); 
   const [showPassword, setShowPassword] = useState(false);
+  const [isFormInvalid, setIsFormInvalid] = useState(false);
 
   const navigate = useNavigate(); 
 
   function handleClickLogin() {
-    navigate("/overview"); 
+    if(userMail === "anton.winschel@gmx.de" || userMail === "schoeffer.marika@yahoo.de") {
+      if(userPassword === "schildi123") {
+        navigate("/overview"); 
+      }
+      else{
+        setIsFormInvalid(true);
+      }
+    }
+    else{
+      setIsFormInvalid(true);
+    }
   }
 
   function handleClickVisibility() {
@@ -80,6 +91,7 @@ export function Login() {
           >
           
             <TextField
+              error={isFormInvalid}
               type="email"
               label="E-Mail"
               variant="outlined"
@@ -89,6 +101,7 @@ export function Login() {
             />
 
             <TextField
+              error={isFormInvalid}
               label="Passwort"
               variant="outlined"
               color="primary"
@@ -102,7 +115,7 @@ export function Login() {
                     { showPassword === false ? <Visibility/> : <VisibilityOff/>}
                   </IconButton>
               }}
-              type={ showPassword === false ? "password" : "tex"}
+              type={ showPassword === false ? "password" : "text"}
             /> 
           
           </Box>
@@ -113,14 +126,24 @@ export function Login() {
             alignItems="center"
             pb="10px"
           >
-            <Button 
-              color="primary"
-              variant="outlined"
-              style={{ borderColor: primaryColor}}
-              onClick={handleClickLogin}
-            >
-              Login
-            </Button>
+            { isFormInvalid === false ? 
+              <Button 
+                color="primary"
+                variant="outlined"
+                style={{ borderColor: primaryColor}}
+                onClick={handleClickLogin}
+              >
+                Login
+              </Button>
+            : 
+              <Button 
+                color="error"
+                variant="outlined"
+                onClick={handleClickLogin}
+              >
+                Login
+              </Button>
+            }
           </Box>
         </Box>
       </Paper>
