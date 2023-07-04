@@ -2,17 +2,29 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { Avatar, Box, Button, Paper, TextField, Typography } from "@mui/material";
+import { IconButton } from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { primaryColor } from "../style";
 
 export function Login() {
 
   const [userMail, setUserMail] = useState("");
   const [userPassword, setUserPassword] = useState(""); 
+  const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate(); 
 
   function handleClickLogin() {
     navigate("/overview"); 
+  }
+
+  function handleClickVisibility() {
+    if(showPassword === true) {
+      setShowPassword(false);
+    }
+    else{
+      setShowPassword(true);
+    }
   }
 
   return (
@@ -77,12 +89,20 @@ export function Login() {
             />
 
             <TextField
-              type="password"
               label="Passwort"
               variant="outlined"
               color="primary"
               value={userPassword}
               onChange={x => setUserPassword(x.target.value)}
+              InputProps={{
+                endAdornment: 
+                  <IconButton
+                    onClick={handleClickVisibility}
+                  >
+                    { showPassword === false ? <Visibility/> : <VisibilityOff/>}
+                  </IconButton>
+              }}
+              type={ showPassword === false ? "password" : "tex"}
             /> 
           
           </Box>
