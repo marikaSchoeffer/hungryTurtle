@@ -4,9 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { Avatar, Box, Button, Paper, TextField, Typography } from "@mui/material";
 import { IconButton } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { primaryColor } from "../style";
+import { primaryColor } from "../../style";
+import { overviewRoute } from "../routes";
 
-export function Login() {
+export function LoginPage() {
 
   const [userMail, setUserMail] = useState("");
   const [userPassword, setUserPassword] = useState(""); 
@@ -18,7 +19,7 @@ export function Login() {
   function handleClickLogin() {
     if(userMail === "anton.winschel@gmx.de" || userMail === "schoeffer.marika@yahoo.de") {
       if(userPassword === "schildi123") {
-        navigate("/overview"); 
+        navigate(overviewRoute); 
       }
       else{
         setIsFormInvalid(true);
