@@ -14,6 +14,7 @@ type CreateRecipePageProps = {
 
 export function CreateRecipePage(props: CreateRecipePageProps) {
     const [recipeTitle, setRecipeTitle] = useState(""); 
+    const [recipeDuration, setRecipeDuration] = useState(""); 
     const [recipeIngredients, setRecipeIngredients] = useState("");
     const [recipeDescription, setRecipeDescription] = useState(""); 
 
@@ -21,12 +22,14 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
 
     function handleClickConfigRecipe() {
         let title = structuredClone(recipeTitle);
+        let duration = structuredClone(recipeDuration);
         let ingredients = structuredClone(recipeIngredients)
         let description = structuredClone(recipeDescription)
         let array = structuredClone(props.recipes);
 
         let recipeObj: Recipe = {
             title: title,
+            duration: duration,
             ingredients: ingredients,
             description: description,
         }
@@ -35,6 +38,7 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
         props.setRecipes(array); 
 
         setRecipeTitle("");
+        setRecipeDuration("");
         setRecipeIngredients("");
         setRecipeDescription("");
 
@@ -68,6 +72,15 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
                     label="Rezepttitel"
                     value={recipeTitle}
                     onChange={x => setRecipeTitle(x.target.value)}
+                />
+
+                <TextField
+                    type="text"
+                    variant="outlined"
+                    label="Dauer"
+                    placeholder="Minuten"
+                    value={recipeDuration}
+                    onChange={x => setRecipeDuration(x.target.value.replace(/\D/g, ""))}
                 />
 
                 <TextField

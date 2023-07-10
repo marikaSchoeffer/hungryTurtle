@@ -9,6 +9,8 @@ export function RecipePage(props: RecipePageProps) {
         <>
             <h1>{props.currentRecipe.title}</h1>
             <br/>
+            <h2>{props.currentRecipe.duration} Minuten</h2>
+            <br />
             <h2>{props.currentRecipe.ingredients}</h2>
             <br/>
             <h2>{props.currentRecipe.description}</h2>
