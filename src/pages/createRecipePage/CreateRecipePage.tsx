@@ -102,22 +102,16 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
                 display="flex"
                 justifyContent="end"
             >
-                {
-                    recipeTitle && recipeDuration && recipeIngredients && recipeDescription !== "" ?
+                
+                <IconButton 
+                    color="primary"
+                    onClick={handleClickCreateRecipe}
+                    disabled={recipeTitle === "" || recipeDuration === "" || recipeIngredients === "" || recipeDescription === ""}
+                >
+                    <CheckIcon />
+                </IconButton>
 
-                    <IconButton 
-                        color="primary"
-                        onClick={handleClickCreateRecipe}
-                    >
-                        <CheckIcon />
-                    </IconButton>
-
-                    :
-
-                    <IconButton disabled={true}>
-                        <CheckIcon />
-                    </IconButton>
-                }
+                    
             </Box>
         </Paper>
     </Box>
