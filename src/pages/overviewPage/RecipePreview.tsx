@@ -23,10 +23,14 @@ export function RecipePreview(props: RecipePreviewProps) {
                     height="100px"
                 />
 
-                <Typography>
+                <Typography variant="body1">
                     <Link 
                         to={`${props.recipe.title.toLowerCase()}`}
                         onClick={handleClickLink}
+                        style={{
+                            color:"grey",
+                            textDecoration: "inherit",
+                        }}
                     >
                         {props.recipe.title}
                     </Link>

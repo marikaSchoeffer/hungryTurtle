@@ -1,3 +1,4 @@
+import { Box, Typography, List, ListItem } from "@mui/material";
 import { Recipe } from "../../types/Recipe";
 
 type RecipePageProps = {
@@ -6,14 +7,58 @@ type RecipePageProps = {
 
 export function RecipePage(props: RecipePageProps) {
     return(
-        <>
-            <h1>{props.currentRecipe.title}</h1>
-            <br/>
-            <h2>{props.currentRecipe.duration} Minuten</h2>
-            <br />
-            <h2>{props.currentRecipe.ingredients}</h2>
-            <br/>
-            <h2>{props.currentRecipe.description}</h2>
-        </>
+        <Box
+            display="flex"
+            flexDirection="column"
+            padding="20px"
+            rowGap="20px"
+        >
+            <Typography variant="h3">
+                {props.currentRecipe.title}
+            </Typography>
+            
+            <Typography variant="h6">
+                Dauer: {props.currentRecipe.duration} Minuten
+            </Typography>
+            
+            <Box 
+                display="flex"
+                flexDirection="column"
+
+            >
+                <Typography variant="h6">Zutaten:</Typography>
+                
+                {props.currentRecipe.ingredients.split("\n").map((string, i) => {
+                    return(
+                        <List key={i} style={{ margin: 0, padding: 0 }}>
+                            <ListItem>
+                                <Typography variant="body1">
+                                    {string}
+                                </Typography>
+                            </ListItem>
+                        </List>
+                    )})
+                }
+            </Box>
+            
+            <Box
+                display="flex"
+                flexDirection="column"
+            >
+                <Typography variant="h6">Beschreibung:</Typography>
+
+                {props.currentRecipe.description.split("\n").map((string,i) => {
+                    return(
+                        <List key={i} style={{ margin: 0, padding: 0 }}>
+                                <ListItem>
+                                    <Typography variant="body1">
+                                        {string}
+                                    </Typography>
+                                </ListItem>
+                            </List>
+                    )})
+                }
+            </Box>
+        </Box>
     )
 }
