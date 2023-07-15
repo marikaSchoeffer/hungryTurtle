@@ -20,7 +20,7 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
 
     const navigate = useNavigate();
 
-    function handleClickConfigRecipe() {
+    function handleClickCreateRecipe() {
         let title = structuredClone(recipeTitle);
         let duration = structuredClone(recipeDuration);
         let ingredients = structuredClone(recipeIngredients)
@@ -102,12 +102,16 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
                 display="flex"
                 justifyContent="end"
             >
+                
                 <IconButton 
                     color="primary"
-                    onClick={handleClickConfigRecipe}
+                    onClick={handleClickCreateRecipe}
+                    disabled={recipeTitle === "" || recipeDuration === "" || recipeIngredients === "" || recipeDescription === ""}
                 >
                     <CheckIcon />
                 </IconButton>
+
+                    
             </Box>
         </Paper>
     </Box>
