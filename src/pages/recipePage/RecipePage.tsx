@@ -1,4 +1,4 @@
-import { Box, Card, Typography, List, ListItem} from "@mui/material";
+import { Box, Card, Typography, List, ListItem, TextField} from "@mui/material";
 import { Recipe } from "../../types/Recipe";
 
 type RecipePageProps = {
@@ -30,17 +30,13 @@ export function RecipePage(props: RecipePageProps) {
                 >
                     <Typography variant="h6">Zutaten:</Typography>
                     
-                    {props.currentRecipe.ingredients.split("\n").map((string, i) => {
-                        return(
-                            <List key={i} style={{ margin: 0, padding: 0 }}>
-                                <ListItem>
-                                    <Typography variant="body1">
-                                        {string}
-                                    </Typography>
-                                </ListItem>
-                            </List>
-                        )})
-                    }
+                    <TextField
+                        multiline
+                        InputProps={{
+                            readOnly: true,
+                        }}
+                        value={props.currentRecipe.ingredients}
+                    />
                 </Box>
                 
                 <Box
@@ -48,18 +44,14 @@ export function RecipePage(props: RecipePageProps) {
                     flexDirection="column"
                 >
                     <Typography variant="h6">Beschreibung:</Typography>
-
-                    {props.currentRecipe.description.split("\n").map((string,i) => {
-                        return(
-                            <List key={i} style={{ margin: 0, padding: 0 }}>
-                                    <ListItem>
-                                        <Typography variant="body1">
-                                            {string}
-                                        </Typography>
-                                    </ListItem>
-                                </List>
-                        )})
-                    }
+                    <TextField
+                        multiline
+                        InputProps={{
+                            readOnly: true,
+                        }}
+                        value={props.currentRecipe.description}
+                    />
+                    
                 </Box>
             </Card>
         </Box>
