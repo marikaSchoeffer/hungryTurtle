@@ -29,7 +29,7 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
 
         let recipeObj: Recipe = {
             title: title,
-            duration: duration,
+            duration: parseInt(duration),
             ingredients: ingredients,
             description: description,
         }
@@ -102,22 +102,16 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
                 display="flex"
                 justifyContent="end"
             >
-                {
-                    recipeTitle && recipeDuration && recipeIngredients && recipeDescription !== "" ?
+                
+                <IconButton 
+                    color="primary"
+                    onClick={handleClickCreateRecipe}
+                    disabled={recipeTitle === "" || recipeDuration === "" || recipeIngredients === "" || recipeDescription === ""}
+                >
+                    <CheckIcon />
+                </IconButton>
 
-                    <IconButton 
-                        color="primary"
-                        onClick={handleClickCreateRecipe}
-                    >
-                        <CheckIcon />
-                    </IconButton>
-
-                    :
-
-                    <IconButton disabled={true}>
-                        <CheckIcon />
-                    </IconButton>
-                }
+                    
             </Box>
         </Paper>
     </Box>

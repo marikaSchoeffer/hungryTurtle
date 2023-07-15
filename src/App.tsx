@@ -10,7 +10,7 @@ import { createRecipeRoute, loginRoute, overviewRoute, recipeRoute } from "./pag
 
 let emptyRecipe: Recipe = {
   title: "",
-  duration: "",
+  duration: 0,
   ingredients: "",
   description: ""
 }

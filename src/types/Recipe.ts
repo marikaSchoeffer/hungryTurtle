@@ -1,7 +1,7 @@
 export type Recipe = {
     title: string; 
 
-    duration: string;
+    duration: number;
 
     ingredients: string; 
 
