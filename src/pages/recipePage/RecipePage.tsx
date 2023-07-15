@@ -1,4 +1,4 @@
-import { Box, Typography, List, ListItem } from "@mui/material";
+import { Box, Card, Typography, List, ListItem} from "@mui/material";
 import { Recipe } from "../../types/Recipe";
 
 type RecipePageProps = {
@@ -13,52 +13,55 @@ export function RecipePage(props: RecipePageProps) {
             padding="20px"
             rowGap="20px"
         >
-            <Typography variant="h3">
-                {props.currentRecipe.title}
-            </Typography>
-            
-            <Typography variant="h6">
-                Dauer: {props.currentRecipe.duration} Minuten
-            </Typography>
-            
-            <Box 
-                display="flex"
-                flexDirection="column"
-
-            >
-                <Typography variant="h6">Zutaten:</Typography>
+            <Card style={{maxWidth: "500px"}}>
                 
-                {props.currentRecipe.ingredients.split("\n").map((string, i) => {
-                    return(
-                        <List key={i} style={{ margin: 0, padding: 0 }}>
-                            <ListItem>
-                                <Typography variant="body1">
-                                    {string}
-                                </Typography>
-                            </ListItem>
-                        </List>
-                    )})
-                }
-            </Box>
-            
-            <Box
-                display="flex"
-                flexDirection="column"
-            >
-                <Typography variant="h6">Beschreibung:</Typography>
+                <Typography variant="h3">
+                    {props.currentRecipe.title}
+                </Typography>
+                
+                <Typography variant="h6">
+                    Dauer: {props.currentRecipe.duration} Minuten
+                </Typography>
+                
+                <Box 
+                    display="flex"
+                    flexDirection="column"
 
-                {props.currentRecipe.description.split("\n").map((string,i) => {
-                    return(
-                        <List key={i} style={{ margin: 0, padding: 0 }}>
+                >
+                    <Typography variant="h6">Zutaten:</Typography>
+                    
+                    {props.currentRecipe.ingredients.split("\n").map((string, i) => {
+                        return(
+                            <List key={i} style={{ margin: 0, padding: 0 }}>
                                 <ListItem>
                                     <Typography variant="body1">
                                         {string}
                                     </Typography>
                                 </ListItem>
                             </List>
-                    )})
-                }
-            </Box>
+                        )})
+                    }
+                </Box>
+                
+                <Box
+                    display="flex"
+                    flexDirection="column"
+                >
+                    <Typography variant="h6">Beschreibung:</Typography>
+
+                    {props.currentRecipe.description.split("\n").map((string,i) => {
+                        return(
+                            <List key={i} style={{ margin: 0, padding: 0 }}>
+                                    <ListItem>
+                                        <Typography variant="body1">
+                                            {string}
+                                        </Typography>
+                                    </ListItem>
+                                </List>
+                        )})
+                    }
+                </Box>
+            </Card>
         </Box>
     )
 }
