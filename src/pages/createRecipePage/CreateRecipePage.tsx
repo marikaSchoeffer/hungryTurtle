@@ -29,7 +29,7 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
 
         let recipeObj: Recipe = {
             title: title,
-            duration: duration,
+            duration: parseInt(duration),
             ingredients: ingredients,
             description: description,
         }
