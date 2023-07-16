@@ -1,4 +1,4 @@
-import { Box, Card, Typography, List, ListItem, TextField} from "@mui/material";
+import { Box, Card, Typography, TextField} from "@mui/material";
 import { Recipe } from "../../types/Recipe";
 
 type RecipePageProps = {

@@ -5,6 +5,8 @@ import { TextField, Box, Paper, IconButton} from "@mui/material"
 import CheckIcon from '@mui/icons-material/Check';
 import { Recipe } from "../../types/Recipe";
 import { overviewRoute } from "../routes";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "../../firebase";
 
 type CreateRecipePageProps = {
     recipes: Recipe[]; 
@@ -20,7 +22,7 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
 
     const navigate = useNavigate();
 
-    function handleClickCreateRecipe() {
+    async function handleClickCreateRecipe() {
         let title = structuredClone(recipeTitle);
         let duration = structuredClone(recipeDuration);
         let ingredients = structuredClone(recipeIngredients)
@@ -36,6 +38,13 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
 
         array.push(recipeObj); 
         props.setRecipes(array); 
+
+        await setDoc(doc(db, "recipes", "recipeOne"), {
+            title: title,
+            duration: parseInt(duration),
+            ingredients: ingredients,
+            description: description,
+          });
 
         setRecipeTitle("");
         setRecipeDuration("");
