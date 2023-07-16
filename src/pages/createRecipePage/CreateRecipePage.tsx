@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { createGuid } from "../../lib/createGuid";
 
 import { TextField, Box, Paper, IconButton} from "@mui/material"
 import CheckIcon from '@mui/icons-material/Check';
@@ -29,22 +30,20 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
         let description = structuredClone(recipeDescription)
         let array = structuredClone(props.recipes);
 
+        let id = createGuid(); 
+
         let recipeObj: Recipe = {
+            id: id,
             title: title,
             duration: parseInt(duration),
             ingredients: ingredients,
             description: description,
         }
 
+        await setDoc(doc(db, "recipes", id), recipeObj);
+
         array.push(recipeObj); 
         props.setRecipes(array); 
-
-        await setDoc(doc(db, "recipes", "recipeOne"), {
-            title: title,
-            duration: parseInt(duration),
-            ingredients: ingredients,
-            description: description,
-          });
 
         setRecipeTitle("");
         setRecipeDuration("");
