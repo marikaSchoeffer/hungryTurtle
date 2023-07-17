@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
-import { Box, Chip, Divider } from "@mui/material"
+import { Box, Chip } from "@mui/material"
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { RecipePreview } from "./RecipePreview";
 import { Recipe } from "../../types/Recipe";
