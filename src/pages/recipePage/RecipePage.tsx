@@ -1,19 +1,32 @@
-import { Box, Card, Typography, TextField} from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { overviewRoute } from "../routes";
 import { Recipe } from "../../types/Recipe";
+import { Box, Card, Typography, TextField, IconButton, Divider} from "@mui/material";
+
+import AppsIcon from '@mui/icons-material/Apps';
+import { primaryColor } from "../../style";
 
 type RecipePageProps = {
     currentRecipe: Recipe; 
 }
 
 export function RecipePage(props: RecipePageProps) {
+    const navigate = useNavigate();
+    
+    function handleClickBackToOverview() {
+        navigate(overviewRoute); 
+    }
+
     return(
         <Box
             display="flex"
             flexDirection="column"
-            padding="20px"
+            justifyContent="center"
+            alignItems="center"
+            paddingTop="20px"
             rowGap="20px"
         >
-            <Card style={{maxWidth: "500px"}}>
+            <Card style={{width: "300px", paddingTop: "10px", paddingLeft: "10px"}}>
                 
                 <Typography variant="h3">
                     {props.currentRecipe.title}
@@ -34,6 +47,14 @@ export function RecipePage(props: RecipePageProps) {
                         multiline
                         InputProps={{
                             readOnly: true,
+                            style: {
+                                paddingTop: "0px",
+                                paddingBottom: "5px",
+                            }
+                        }}
+                        sx={{
+                            border: "none",
+                            "& fieldset": { border: "none"},
                         }}
                         value={props.currentRecipe.ingredients}
                     />
@@ -48,10 +69,29 @@ export function RecipePage(props: RecipePageProps) {
                         multiline
                         InputProps={{
                             readOnly: true,
+                            style: {
+                                paddingTop: "0px",
+                                paddingBottom: "5px",
+                            }
+                        }}
+                        sx={{
+                            border: "none",
+                            "& fieldset": { border: "none"},
                         }}
                         value={props.currentRecipe.description}
                     />
-                    
+                    <Divider variant="middle" color={primaryColor}/>
+                </Box>
+                <Box 
+                    display="flex"
+                    justifyContent="right"
+                >
+                    <IconButton 
+                        color="primary"
+                        onClick={handleClickBackToOverview}
+                    >
+                        <AppsIcon/>
+                    </IconButton>
                 </Box>
             </Card>
         </Box>
