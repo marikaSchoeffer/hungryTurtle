@@ -1,9 +1,10 @@
 import { useNavigate } from "react-router-dom";
-import { overviewRoute } from "../routes";
+import { editRecipeRoute, overviewRoute } from "../routes";
 import { Recipe } from "../../types/Recipe";
 import { Box, Card, Typography, TextField, IconButton, Divider} from "@mui/material";
 
 import AppsIcon from '@mui/icons-material/Apps';
+import EditIcon from '@mui/icons-material/Edit';
 import { primaryColor } from "../../style";
 
 type RecipePageProps = {
@@ -13,6 +14,10 @@ type RecipePageProps = {
 export function RecipePage(props: RecipePageProps) {
     const navigate = useNavigate();
     
+    function handleClickEditRecipe() {
+        navigate(editRecipeRoute)
+    }
+
     function handleClickBackToOverview() {
         navigate(overviewRoute); 
     }
@@ -84,8 +89,15 @@ export function RecipePage(props: RecipePageProps) {
                 </Box>
                 <Box 
                     display="flex"
-                    justifyContent="right"
+                    justifyContent="center"
                 >
+                    <IconButton
+                        color="primary"
+                        onClick={handleClickEditRecipe}
+                    >
+                        <EditIcon />
+                    </IconButton>
+
                     <IconButton 
                         color="primary"
                         onClick={handleClickBackToOverview}
