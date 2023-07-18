@@ -4,4 +4,5 @@ export type Recipe = {
     duration: number;
     ingredients: string; 
     description: string; 
+    deleted: boolean;
 }

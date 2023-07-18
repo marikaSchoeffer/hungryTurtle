@@ -6,7 +6,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { RecipePreview } from "./RecipePreview";
 import { Recipe } from "../../types/Recipe";
 import { createRecipeRoute } from "../routes";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../firebase";
 
 type OverviewPageProps = {
@@ -19,7 +19,8 @@ type OverviewPageProps = {
 export function OverviewPage(props: OverviewPageProps) {
     useEffect(() => {
         const fetchData = async () => {
-            const result = await getDocs(collection(db, "recipes"));
+            const q = query(collection(db,"recipes"), where("deleted", "==", false))
+            const result = await getDocs(q);
             let recipes: Recipe[] = []; 
 
             result.forEach((doc) => {
@@ -29,7 +30,8 @@ export function OverviewPage(props: OverviewPageProps) {
                     title: doc.data().title,
                     duration: doc.data().duration,
                     ingredients: doc.data().ingredients,
-                    description: doc.data().description
+                    description: doc.data().description,
+                    deleted: doc.data().deleted
                 }
                 recipes.push(recipe);
             })

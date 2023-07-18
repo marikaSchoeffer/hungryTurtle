@@ -14,7 +14,8 @@ let emptyRecipe: Recipe = {
   title: "",
   duration: 0,
   ingredients: "",
-  description: ""
+  description: "",
+  deleted: false,
 }
 
 export function App() {

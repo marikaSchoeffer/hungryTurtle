@@ -38,6 +38,7 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
             duration: parseInt(duration),
             ingredients: ingredients,
             description: description,
+            deleted: false,
         }
 
         await setDoc(doc(db, "recipes", id), recipeObj);
