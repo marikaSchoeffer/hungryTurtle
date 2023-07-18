@@ -10,7 +10,7 @@ type RecipePreviewProps = {
 export function RecipePreview(props: RecipePreviewProps) {
     function handleClickLink() {
         let currentRecipe = props.recipe;
-        props.setCurrentRecipe(currentRecipe); 
+        props.setCurrentRecipe(currentRecipe);
     }
 
     return(
