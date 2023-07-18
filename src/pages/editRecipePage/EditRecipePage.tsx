@@ -14,11 +14,10 @@ type EditRecipeProps = {
 }
 
 export function EditRecipePage(props: EditRecipeProps) {
-    const duration = structuredClone(props.currentRecipe.duration.toString());
     const navigate = useNavigate();
 
     const [recipeTitle, setRecipeTitle] = useState(props.currentRecipe.title); 
-    const [recipeDuration, setRecipeDuration] = useState(duration); 
+    const [recipeDuration, setRecipeDuration] = useState(props.currentRecipe.duration.toString()); 
     const [recipeIngredients, setRecipeIngredients] = useState(props.currentRecipe.ingredients);
     const [recipeDescription, setRecipeDescription] = useState(props.currentRecipe.description); 
 
@@ -27,14 +26,6 @@ export function EditRecipePage(props: EditRecipeProps) {
         let duration = structuredClone(recipeDuration);
         let ingredients = structuredClone(recipeIngredients);
         let description = structuredClone(recipeDescription);
-        
-        const updateTarget = doc(db,"recipes", props.currentRecipe.id);
-        await updateDoc(updateTarget, {
-            title: title,
-            duration: parseInt(duration),
-            ingredients: ingredients,
-            description: description,
-        }); 
 
         let recipeObj: Recipe = {
             id: props.currentRecipe.id,
@@ -43,7 +34,10 @@ export function EditRecipePage(props: EditRecipeProps) {
             ingredients: ingredients, 
             description: description,
         }
-
+        
+        const updateTarget = doc(db,"recipes", props.currentRecipe.id);
+        await updateDoc(updateTarget, recipeObj);
+           
         props.setCurrentRecipe(recipeObj);
         navigate(recipeRoute);
     }
@@ -109,7 +103,7 @@ export function EditRecipePage(props: EditRecipeProps) {
                 <IconButton 
                     color="primary"
                     onClick={handleClickEditRecipe}
-                    //disabled={recipeTitle === "" || recipeDuration === "" || recipeIngredients === "" || recipeDescription === ""}
+                    disabled={recipeTitle === "" || recipeDuration === "" || recipeIngredients === "" || recipeDescription === ""}
                 >
                     <CheckIcon />
                 </IconButton>
