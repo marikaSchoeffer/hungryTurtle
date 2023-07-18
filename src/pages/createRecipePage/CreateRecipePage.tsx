@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { createGuid } from "../../lib/createGuid";
 
 import { TextField, Box, Paper, IconButton} from "@mui/material"
 import CheckIcon from '@mui/icons-material/Check';
 import { Recipe } from "../../types/Recipe";
 import { overviewRoute } from "../routes";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "../../firebase";
 
 type CreateRecipePageProps = {
     recipes: Recipe[]; 
@@ -20,19 +23,24 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
 
     const navigate = useNavigate();
 
-    function handleClickCreateRecipe() {
+    async function handleClickCreateRecipe() {
         let title = structuredClone(recipeTitle);
         let duration = structuredClone(recipeDuration);
         let ingredients = structuredClone(recipeIngredients)
         let description = structuredClone(recipeDescription)
         let array = structuredClone(props.recipes);
 
+        let id = createGuid(); 
+
         let recipeObj: Recipe = {
+            id: id,
             title: title,
             duration: parseInt(duration),
             ingredients: ingredients,
             description: description,
         }
+
+        await setDoc(doc(db, "recipes", id), recipeObj);
 
         array.push(recipeObj); 
         props.setRecipes(array); 

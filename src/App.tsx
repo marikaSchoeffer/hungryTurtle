@@ -9,6 +9,7 @@ import { Recipe } from "./types/Recipe";
 import { createRecipeRoute, loginRoute, overviewRoute, recipeRoute } from "./pages/routes";
 
 let emptyRecipe: Recipe = {
+  id: "",
   title: "",
   duration: 0,
   ingredients: "",
