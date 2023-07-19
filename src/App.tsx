@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useState } from "react";
 
 import { LoginPage } from "./pages/loginPage/LoginPage";
@@ -6,7 +6,13 @@ import { OverviewPage } from "./pages/overviewPage/OverviewPage";
 import { CreateRecipePage } from "./pages/createRecipePage/CreateRecipePage";
 import { RecipePage } from "./pages/recipePage/RecipePage";
 import { Recipe } from "./types/Recipe";
-import { createRecipeRoute, editRecipeRoute, loginRoute, overviewRoute, recipeRoute } from "./pages/routes";
+import {
+  createRecipeRoute,
+  editRecipeRoute,
+  loginRoute,
+  overviewRoute,
+  recipeRoute,
+} from "./pages/routes";
 import { EditRecipePage } from "./pages/editRecipePage/EditRecipePage";
 
 let emptyRecipe: Recipe = {
@@ -16,16 +22,16 @@ let emptyRecipe: Recipe = {
   ingredients: "",
   description: "",
   deleted: false,
-}
+};
 
 export function App() {
-  const [currentRecipe, setCurrentRecipe] = useState<Recipe>(emptyRecipe); 
+  const [currentRecipe, setCurrentRecipe] = useState<Recipe>(emptyRecipe);
   const [recipes, setRecipes] = useState<Recipe[]>([]);
- 
+
   return (
     <BrowserRouter>
       <Routes>
-        <Route path={loginRoute} element={<LoginPage/>}/>
+        <Route path={loginRoute} element={<LoginPage />} />
         <Route
           path={overviewRoute}
           element={
@@ -37,18 +43,18 @@ export function App() {
             />
           }
         />
-        <Route path={recipeRoute} element={<RecipePage currentRecipe={currentRecipe}/>}/>
-        <Route 
+        <Route
+          path={recipeRoute}
+          element={<RecipePage currentRecipe={currentRecipe} />}
+        />
+        <Route
           path={createRecipeRoute}
           element={
-            <CreateRecipePage
-              recipes={recipes}
-              setRecipes={setRecipes}
-            />
+            <CreateRecipePage recipes={recipes} setRecipes={setRecipes} />
           }
         />
-        <Route 
-          path={editRecipeRoute} 
+        <Route
+          path={editRecipeRoute}
           element={
             <EditRecipePage
               currentRecipe={currentRecipe}
@@ -56,9 +62,8 @@ export function App() {
             />
           }
         />
-        <Route path="*" element={<Navigate to={loginRoute}/>}/>
+        <Route path="*" element={<Navigate to={loginRoute} />} />
       </Routes>
     </BrowserRouter>
-  )
+  );
 }
-
