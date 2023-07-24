@@ -3,10 +3,11 @@ import { useEffect } from "react";
 
 import { Box, Chip } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import { collection, getDocs, query, where } from "firebase/firestore";
+
 import { RecipePreview } from "./RecipePreview";
 import { Recipe } from "../../types/Recipe";
 import { createRecipeRoute } from "../routes";
-import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../firebase";
 
 type OverviewPageProps = {

@@ -1,10 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { doc, updateDoc } from "firebase/firestore";
-import { db } from "../../firebase";
-import { Recipe } from "../../types/Recipe";
-import { overviewRoute, recipeRoute } from "../routes";
 
+import { doc, updateDoc } from "firebase/firestore";
 import {
   Box,
   Button,
@@ -18,14 +15,16 @@ import {
 import CheckIcon from "@mui/icons-material/Check";
 import DeleteIcon from "@mui/icons-material/Delete";
 
+import { db } from "../../firebase";
+import { Recipe } from "../../types/Recipe";
+import { overviewRoute, recipeRoute } from "../routes";
+
 type EditRecipeProps = {
   currentRecipe: Recipe;
   setCurrentRecipe: (recipe: Recipe) => void;
 };
 
 export function EditRecipePage(props: EditRecipeProps) {
-  const navigate = useNavigate();
-
   const [recipeTitle, setRecipeTitle] = useState(props.currentRecipe.title);
   const [recipeDuration, setRecipeDuration] = useState(
     props.currentRecipe.duration.toString()
@@ -36,20 +35,17 @@ export function EditRecipePage(props: EditRecipeProps) {
   const [recipeDescription, setRecipeDescription] = useState(
     props.currentRecipe.description
   );
-  const [open, setOpen] = useState(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+
+  const navigate = useNavigate();
 
   async function handleClickEditRecipe() {
-    let title = structuredClone(recipeTitle);
-    let duration = structuredClone(recipeDuration);
-    let ingredients = structuredClone(recipeIngredients);
-    let description = structuredClone(recipeDescription);
-
     let recipeObj: Recipe = {
       id: props.currentRecipe.id,
-      title: title,
-      duration: parseInt(duration),
-      ingredients: ingredients,
-      description: description,
+      title: recipeTitle,
+      duration: parseInt(recipeDuration),
+      ingredients: recipeIngredients,
+      description: recipeDescription,
       deleted: false,
     };
 
@@ -68,12 +64,12 @@ export function EditRecipePage(props: EditRecipeProps) {
     navigate(overviewRoute);
   }
 
-  function handelClickOpen() {
-    setOpen(true);
+  function handelClickOpenDeleteDialog() {
+    setOpenDeleteDialog(true);
   }
 
-  function handleClickClose() {
-    setOpen(false);
+  function handleClickCloseDeleteDialog() {
+    setOpenDeleteDialog(false);
   }
 
   return (
@@ -127,7 +123,7 @@ export function EditRecipePage(props: EditRecipeProps) {
         </Box>
 
         <Box display="flex" justifyContent="end">
-          <IconButton color="primary" onClick={handelClickOpen}>
+          <IconButton color="primary" onClick={handelClickOpenDeleteDialog}>
             <DeleteIcon />
           </IconButton>
 
@@ -143,9 +139,13 @@ export function EditRecipePage(props: EditRecipeProps) {
           >
             <CheckIcon />
           </IconButton>
-          <Dialog open={open} onClose={handleClickClose}>
+
+          <Dialog
+            open={openDeleteDialog}
+            onClose={handleClickCloseDeleteDialog}
+          >
             <DialogContent>
-              <Typography>Dieses Rezept entgültig löschen?</Typography>
+              <Typography>Dieses Rezept endgültig löschen?</Typography>
             </DialogContent>
             <Box
               display="flex"
@@ -157,7 +157,7 @@ export function EditRecipePage(props: EditRecipeProps) {
               <Button onClick={handleClickDelete} variant="outlined">
                 Ja
               </Button>
-              <Button onClick={handleClickClose} variant="outlined">
+              <Button onClick={handleClickCloseDeleteDialog} variant="outlined">
                 Nein
               </Button>
             </Box>

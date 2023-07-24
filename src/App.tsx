@@ -47,12 +47,7 @@ export function App() {
           path={recipeRoute}
           element={<RecipePage currentRecipe={currentRecipe} />}
         />
-        <Route
-          path={createRecipeRoute}
-          element={
-            <CreateRecipePage recipes={recipes} setRecipes={setRecipes} />
-          }
-        />
+        <Route path={createRecipeRoute} element={<CreateRecipePage />} />
         <Route
           path={editRecipeRoute}
           element={

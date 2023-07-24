@@ -1,40 +1,47 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Avatar, Box, Button, Paper, TextField, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Button,
+  Paper,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { IconButton } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+
 import { primaryColor } from "../../style";
 import { overviewRoute } from "../routes";
 
 export function LoginPage() {
-
   const [userMail, setUserMail] = useState("");
-  const [userPassword, setUserPassword] = useState(""); 
+  const [userPassword, setUserPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isFormInvalid, setIsFormInvalid] = useState(false);
 
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   function handleClickLogin() {
-    if(userMail === "anton.winschel@gmx.de" || userMail === "schoeffer.marika@yahoo.de") {
-      if(userPassword === "schildi123") {
-        navigate(overviewRoute); 
-      }
-      else{
+    if (
+      userMail === "anton.winschel@gmx.de" ||
+      userMail === "schoeffer.marika@yahoo.de"
+    ) {
+      if (userPassword === "schildi123") {
+        navigate(overviewRoute);
+      } else {
         setIsFormInvalid(true);
       }
-    }
-    else{
+    } else {
       setIsFormInvalid(true);
     }
   }
 
   function handleClickVisibility() {
-    if(showPassword === true) {
+    if (showPassword === true) {
       setShowPassword(false);
-    }
-    else{
+    } else {
       setShowPassword(true);
     }
   }
@@ -47,15 +54,15 @@ export function LoginPage() {
       justifyContent="center"
       alignItems="center"
     >
-      <Paper 
+      <Paper
         style={{
-          width: "500px", 
+          width: "500px",
           padding: "10px",
-          margin: "10px"
+          margin: "10px",
         }}
         elevation={4}
       >
-        <Box 
+        <Box
           display="flex"
           flexDirection="column"
           justifyContent="center"
@@ -72,25 +79,16 @@ export function LoginPage() {
               alt="A turtle with a baseball cap"
               src="./image/hungryTurtle.png"
               style={{
-                width:"100px",
-                height:"100px"
+                width: "100px",
+                height: "100px",
               }}
             />
-            <Typography
-              color = {primaryColor}
-              variant="h5"
-            >
+            <Typography color={primaryColor} variant="h5">
               Hungry Turtle
             </Typography>
           </Box>
 
-          <Box
-            display="flex"
-            flexDirection="column"
-            rowGap="20px"
-            width="100%"
-          >
-          
+          <Box display="flex" flexDirection="column" rowGap="20px" width="100%">
             <TextField
               error={isFormInvalid}
               type="email"
@@ -98,7 +96,7 @@ export function LoginPage() {
               variant="outlined"
               color="primary"
               value={userMail}
-              onChange={x => setUserMail(x.target.value)}
+              onChange={(x) => setUserMail(x.target.value)}
             />
 
             <TextField
@@ -107,18 +105,20 @@ export function LoginPage() {
               variant="outlined"
               color="primary"
               value={userPassword}
-              onChange={x => setUserPassword(x.target.value)}
+              onChange={(x) => setUserPassword(x.target.value)}
               InputProps={{
-                endAdornment: 
-                  <IconButton
-                    onClick={handleClickVisibility}
-                  >
-                    { showPassword === false ? <Visibility/> : <VisibilityOff/>}
+                endAdornment: (
+                  <IconButton onClick={handleClickVisibility}>
+                    {showPassword === false ? (
+                      <Visibility />
+                    ) : (
+                      <VisibilityOff />
+                    )}
                   </IconButton>
+                ),
               }}
-              type={ showPassword === false ? "password" : "text"}
-            /> 
-          
+              type={showPassword === false ? "password" : "text"}
+            />
           </Box>
 
           <Box
@@ -127,27 +127,27 @@ export function LoginPage() {
             alignItems="center"
             pb="10px"
           >
-            { isFormInvalid === false ? 
-              <Button 
+            {isFormInvalid === false ? (
+              <Button
                 color="primary"
                 variant="outlined"
-                style={{ borderColor: primaryColor}}
+                style={{ borderColor: primaryColor }}
                 onClick={handleClickLogin}
               >
                 Login
               </Button>
-            : 
-              <Button 
+            ) : (
+              <Button
                 color="error"
                 variant="outlined"
                 onClick={handleClickLogin}
               >
                 Login
               </Button>
-            }
+            )}
           </Box>
         </Box>
       </Paper>
     </Box>
-  )
+  );
 }

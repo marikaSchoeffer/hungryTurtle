@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { editRecipeRoute, overviewRoute } from "../routes";
-import { Recipe } from "../../types/Recipe";
+
 import {
   Box,
   Card,
@@ -9,10 +8,12 @@ import {
   IconButton,
   Divider,
 } from "@mui/material";
-
 import AppsIcon from "@mui/icons-material/Apps";
 import EditIcon from "@mui/icons-material/Edit";
+
 import { primaryColor } from "../../style";
+import { Recipe } from "../../types/Recipe";
+import { editRecipeRoute, overviewRoute } from "../routes";
 
 type RecipePageProps = {
   currentRecipe: Recipe;
@@ -38,51 +39,68 @@ export function RecipePage(props: RecipePageProps) {
       paddingTop="20px"
       rowGap="20px"
     >
-      <Card style={{ width: "300px", paddingTop: "10px", paddingLeft: "10px" }}>
-        <Typography variant="h3">{props.currentRecipe.title}</Typography>
-
-        <Typography variant="h6">
-          Dauer: {props.currentRecipe.duration} Minuten
-        </Typography>
-
-        <Box display="flex" flexDirection="column">
-          <Typography variant="h6">Zutaten:</Typography>
-
-          <TextField
-            multiline
-            InputProps={{
-              readOnly: true,
-              style: {
-                paddingTop: "0px",
-                paddingBottom: "5px",
-              },
+      <Card
+        style={{
+          width: "300px",
+          paddingTop: "10px",
+          paddingLeft: "10px",
+          paddingRight: "10px",
+        }}
+      >
+        <Box display="flex" flexDirection="column" rowGap="20px">
+          <Typography
+            variant="h6"
+            style={{
+              wordWrap: "break-word",
+              fontWeight: "bold",
             }}
-            sx={{
-              border: "none",
-              "& fieldset": { border: "none" },
-            }}
-            value={props.currentRecipe.ingredients}
-          />
-        </Box>
+          >
+            {props.currentRecipe.title}
+          </Typography>
 
-        <Box display="flex" flexDirection="column">
-          <Typography variant="h6">Beschreibung:</Typography>
-          <TextField
-            multiline
-            InputProps={{
-              readOnly: true,
-              style: {
-                paddingTop: "0px",
-                paddingBottom: "5px",
-              },
-            }}
-            sx={{
-              border: "none",
-              "& fieldset": { border: "none" },
-            }}
-            value={props.currentRecipe.description}
-          />
-          <Divider variant="middle" color={primaryColor} />
+          <Typography variant="h6">
+            Dauer: {props.currentRecipe.duration} Minuten
+          </Typography>
+
+          <Box display="flex" flexDirection="column">
+            <Typography variant="h6">Zutaten:</Typography>
+
+            <TextField
+              multiline
+              InputProps={{
+                readOnly: true,
+                style: {
+                  paddingTop: "0px",
+                  paddingBottom: "5px",
+                },
+              }}
+              sx={{
+                border: "none",
+                "& fieldset": { border: "none" },
+              }}
+              value={props.currentRecipe.ingredients}
+            />
+          </Box>
+
+          <Box display="flex" flexDirection="column">
+            <Typography variant="h6">Beschreibung:</Typography>
+            <TextField
+              multiline
+              InputProps={{
+                readOnly: true,
+                style: {
+                  paddingTop: "0px",
+                  paddingBottom: "5px",
+                },
+              }}
+              sx={{
+                border: "none",
+                "& fieldset": { border: "none" },
+              }}
+              value={props.currentRecipe.description}
+            />
+            <Divider color={primaryColor} />
+          </Box>
         </Box>
         <Box display="flex" justifyContent="center">
           <IconButton color="primary" onClick={handleClickEditRecipe}>
