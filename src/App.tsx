@@ -6,7 +6,8 @@ import { OverviewPage } from "./pages/overviewPage/OverviewPage";
 import { CreateRecipePage } from "./pages/createRecipePage/CreateRecipePage";
 import { RecipePage } from "./pages/recipePage/RecipePage";
 import { Recipe } from "./types/Recipe";
-import { createRecipeRoute, loginRoute, overviewRoute, recipeRoute } from "./pages/routes";
+import { createRecipeRoute, editRecipeRoute, loginRoute, overviewRoute, recipeRoute } from "./pages/routes";
+import { EditRecipePage } from "./pages/editRecipePage/EditRecipePage";
 
 let emptyRecipe: Recipe = {
   id: "",
@@ -42,6 +43,15 @@ export function App() {
             <CreateRecipePage
               recipes={recipes}
               setRecipes={setRecipes}
+            />
+          }
+        />
+        <Route 
+          path={editRecipeRoute} 
+          element={
+            <EditRecipePage
+              currentRecipe={currentRecipe}
+              setCurrentRecipe={setCurrentRecipe}
             />
           }
         />
