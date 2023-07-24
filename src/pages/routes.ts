@@ -2,4 +2,4 @@ export const loginRoute = "/";
 export const overviewRoute = "/overview";
 export const createRecipeRoute = "/createRecipe";
 export const recipeRoute = "/overview/:title";
-export const editRecipeRoute = "/editRecipe"
+export const editRecipeRoute = "/editRecipe";

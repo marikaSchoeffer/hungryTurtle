@@ -8,10 +8,9 @@ const firebaseConfig = {
   projectId: "hungryturtle-d400f",
   storageBucket: "hungryturtle-d400f.appspot.com",
   messagingSenderId: "717422626101",
-  appId: "1:717422626101:web:2d99b2a2eab6bd7b8af87c"
+  appId: "1:717422626101:web:2d99b2a2eab6bd7b8af87c",
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
-
