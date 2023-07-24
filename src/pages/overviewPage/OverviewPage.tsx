@@ -48,25 +48,35 @@ export function OverviewPage(props: OverviewPageProps) {
         <Box
             display="flex"
             flexDirection="column"
-            width="100%"
-            height="100%"
             justifyContent="center"
             alignItems="center"
             rowGap="20px"
+            paddingTop="20px"
         >
-            <Chip icon={<AddCircleIcon/>} label="Rezept" color="primary" variant="outlined" onClick={handleClickRecipeChip}/>
+            <Box>
+                <Chip icon={<AddCircleIcon/>} label="Rezept" color="primary" variant="outlined" onClick={handleClickRecipeChip}/>
+            </Box>
 
-            {
-                props.recipes.map((recipe,i) => {
-                    return(
-                        <RecipePreview
-                            key={i}
-                            recipe={recipe}
-                            setCurrentRecipe={props.setCurrentRecipe}
-                        />
-                    )
-                })
-            }
+            <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                flexDirection="row"
+                flexWrap="wrap"
+                gap="20px"
+            >
+                {
+                    props.recipes.map((recipe,i) => {
+                        return(
+                            <RecipePreview
+                                key={i}
+                                recipe={recipe}
+                                setCurrentRecipe={props.setCurrentRecipe}
+                            />
+                        )
+                    })
+                }
+            </Box>
         </Box>
     )
 }
