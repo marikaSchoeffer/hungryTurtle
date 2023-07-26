@@ -15,26 +15,23 @@ export function RecipePreview(props: RecipePreviewProps) {
 
   return (
     <Box>
-      <Card style={{ width: "300px" }}>
-        <CardMedia
-          component="img"
-          image="./image/hungryTurtle.png"
-          height="100px"
-        />
-
-        <Typography variant="body1">
-          <Link
-            to={`${props.recipe.title.toLowerCase()}`}
-            onClick={handleClickLink}
-            style={{
-              color: "grey",
-              textDecoration: "inherit",
-            }}
-          >
-            {props.recipe.title}
-          </Link>
-        </Typography>
-      </Card>
+      <Link
+        to={`${props.recipe.title.toLowerCase()}`}
+        onClick={handleClickLink}
+        style={{
+          color: "grey",
+          textDecoration: "inherit",
+        }}
+      >
+        <Card style={{ width: "300px" }}>
+          <CardMedia
+            component="img"
+            image="./image/hungryTurtle.png"
+            height="100px"
+          />
+          <Typography variant="body1">{props.recipe.title}</Typography>
+        </Card>
+      </Link>
     </Box>
   );
 }
