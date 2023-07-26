@@ -16,7 +16,7 @@ export function RecipePreview(props: RecipePreviewProps) {
   return (
     <Box>
       <Link
-        to={`${props.recipe.title.toLowerCase()}`}
+        to={`${props.recipe.id}`}
         onClick={handleClickLink}
         style={{
           color: "grey",
