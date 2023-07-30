@@ -27,29 +27,18 @@ export function LoginPage() {
 
   async function loginEmailPassword() {
     try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        userMail,
-        userPassword
-      );
-      console.log(userCredential.user);
+      await signInWithEmailAndPassword(auth, userMail, userPassword);
+      return true;
     } catch (error) {
-      console.log(error);
+      return false;
     }
   }
 
-  function handleClickLogin() {
-    loginEmailPassword();
+  async function handleClickLogin() {
+    let loginSuccessful = await loginEmailPassword();
 
-    if (
-      userMail === "anton.winschel@gmx.de" ||
-      userMail === "schoeffer.marika@yahoo.de"
-    ) {
-      if (userPassword === "schildiPupsi123!") {
-        navigate(overviewRoute);
-      } else {
-        setIsFormInvalid(true);
-      }
+    if (loginSuccessful) {
+      navigate(overviewRoute);
     } else {
       setIsFormInvalid(true);
     }
