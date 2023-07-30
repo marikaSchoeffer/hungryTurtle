@@ -11,9 +11,11 @@ import {
 } from "@mui/material";
 import { IconButton } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 import { primaryColor } from "../../style";
 import { overviewRoute } from "../routes";
+import { auth } from "../../firebase";
 
 export function LoginPage() {
   const [userMail, setUserMail] = useState("");
@@ -23,12 +25,27 @@ export function LoginPage() {
 
   const navigate = useNavigate();
 
+  async function loginEmailPassword() {
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        userMail,
+        userPassword
+      );
+      console.log(userCredential.user);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   function handleClickLogin() {
+    loginEmailPassword();
+
     if (
       userMail === "anton.winschel@gmx.de" ||
       userMail === "schoeffer.marika@yahoo.de"
     ) {
-      if (userPassword === "schildi123") {
+      if (userPassword === "schildiPupsi123!") {
         navigate(overviewRoute);
       } else {
         setIsFormInvalid(true);
