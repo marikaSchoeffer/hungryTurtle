@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import CheckIcon from "@mui/icons-material/Check";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import AppsIcon from "@mui/icons-material/Apps";
 import { User, signOut, updatePassword } from "firebase/auth";
 
@@ -28,6 +29,7 @@ type ProfilePageProps = {
 export function ProfilePage(props: ProfilePageProps) {
   const [newPassword, setNewPassword] = useState("");
   const [openPasswordDialog, setOpenPasswordDialog] = useState(false);
+  const [openPasswordInfoDialog, setOpenPasswordInfoDialog] = useState(false);
 
   const navigate = useNavigate();
 
@@ -52,12 +54,20 @@ export function ProfilePage(props: ProfilePageProps) {
     }
   }
 
+  function handleClickPasswordInformation() {
+    setOpenPasswordInfoDialog(true);
+  }
+
   function handleClickBackToOverview() {
     navigate(overviewRoute);
   }
 
   function handleClickClosePasswordDialog() {
     setOpenPasswordDialog(false);
+  }
+
+  function handleClickClosePasswordInfoDialog() {
+    setOpenPasswordInfoDialog(false);
   }
 
   return (
@@ -97,6 +107,15 @@ export function ProfilePage(props: ProfilePageProps) {
               label="Passwort ändern"
               value={newPassword}
               onChange={(x) => setNewPassword(x.target.value)}
+              InputProps={{
+                endAdornment: (
+                  <HelpOutlineIcon
+                    fontSize="medium"
+                    style={{ color: "grey" }}
+                    onClick={handleClickPasswordInformation}
+                  />
+                ),
+              }}
             />
             <IconButton
               color="primary"
@@ -116,6 +135,7 @@ export function ProfilePage(props: ProfilePageProps) {
             <AppsIcon />
           </IconButton>
         </Box>
+
         <Dialog
           open={openPasswordDialog}
           onClose={handleClickClosePasswordDialog}
@@ -124,6 +144,24 @@ export function ProfilePage(props: ProfilePageProps) {
             <Typography>Passwort erfolgreich geändert.</Typography>
           </DialogContent>
           <IconButton onClick={handleClickClosePasswordDialog}>
+            <CheckIcon />
+          </IconButton>
+        </Dialog>
+
+        <Dialog
+          open={openPasswordInfoDialog}
+          onClose={handleClickClosePasswordInfoDialog}
+        >
+          <DialogContent>
+            <Typography>
+              Das Password muss mind. 8 Zeichen lang sein. Das Password darf
+              max. 16 Zeichen lang sein. Das Password muss mind. einen
+              Großbuchstaben, einen Kleinbuchstaben, eine Ziffer und ein
+              Sonderzeichen beinhalten. Das Password darf keine Leerzeichen
+              beinhalten.
+            </Typography>
+          </DialogContent>
+          <IconButton onClick={handleClickClosePasswordInfoDialog}>
             <CheckIcon />
           </IconButton>
         </Dialog>
