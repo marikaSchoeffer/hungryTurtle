@@ -1,8 +1,24 @@
-import { Box, IconButton, Paper } from "@mui/material";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import {
+  Box,
+  Dialog,
+  DialogContent,
+  Divider,
+  IconButton,
+  Paper,
+  TextField,
+  Typography,
+} from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { User, signOut } from "firebase/auth";
+import CheckIcon from "@mui/icons-material/Check";
+import AppsIcon from "@mui/icons-material/Apps";
+import { User, signOut, updatePassword } from "firebase/auth";
 
 import { auth } from "../../firebase";
+import { primaryColor } from "../../style";
+import { overviewRoute } from "../routes";
 
 type ProfilePageProps = {
   user: User | null;
@@ -10,6 +26,11 @@ type ProfilePageProps = {
 };
 
 export function ProfilePage(props: ProfilePageProps) {
+  const [newPassword, setNewPassword] = useState("");
+  const [openPasswordDialog, setOpenPasswordDialog] = useState(false);
+
+  const navigate = useNavigate();
+
   async function handleClickSignOut() {
     try {
       signOut(auth);
@@ -18,6 +39,27 @@ export function ProfilePage(props: ProfilePageProps) {
       console.log(error);
     }
   }
+
+  async function handleClickSubmitNewPassword() {
+    try {
+      if (props.user !== null) {
+        await updatePassword(props.user, newPassword);
+        setNewPassword("");
+        setOpenPasswordDialog(true);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  function handleClickBackToOverview() {
+    navigate(overviewRoute);
+  }
+
+  function handleClickClosePasswordDialog() {
+    setOpenPasswordDialog(false);
+  }
+
   return (
     <Box
       display="flex"
@@ -34,9 +76,57 @@ export function ProfilePage(props: ProfilePageProps) {
         }}
         elevation={4}
       >
-        <IconButton color="primary" onClick={handleClickSignOut}>
-          <LogoutIcon />
-        </IconButton>
+        <Box display="flex" flexDirection="column">
+          <Box display="flex" justifyContent="space-between">
+            <Typography variant="subtitle1">{props.user?.email}</Typography>
+            <IconButton color="primary" onClick={handleClickSignOut}>
+              <LogoutIcon />
+            </IconButton>
+          </Box>
+
+          <Divider color={primaryColor} />
+
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            paddingTop="10px"
+            paddingBottom="10px"
+          >
+            <TextField
+              variant="outlined"
+              label="Passwort ändern"
+              value={newPassword}
+              onChange={(x) => setNewPassword(x.target.value)}
+            />
+            <IconButton
+              color="primary"
+              onClick={handleClickSubmitNewPassword}
+              disabled={
+                newPassword.search(
+                  /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,16}$/
+                ) === -1 //String.prototype.search() returns -1 no match was found.
+              }
+            >
+              <CheckIcon />
+            </IconButton>
+          </Box>
+
+          <Divider color={primaryColor} />
+          <IconButton color="primary" onClick={handleClickBackToOverview}>
+            <AppsIcon />
+          </IconButton>
+        </Box>
+        <Dialog
+          open={openPasswordDialog}
+          onClose={handleClickClosePasswordDialog}
+        >
+          <DialogContent>
+            <Typography>Passwort erfolgreich geändert.</Typography>
+          </DialogContent>
+          <IconButton onClick={handleClickClosePasswordDialog}>
+            <CheckIcon />
+          </IconButton>
+        </Dialog>
       </Paper>
     </Box>
   );
