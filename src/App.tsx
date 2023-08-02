@@ -11,6 +11,7 @@ import { Recipe } from "./types/Recipe";
 import {
   createRecipeRoute,
   editRecipeRoute,
+  forgotPasswordRoute,
   loginRoute,
   overviewRoute,
   profileRoute,
@@ -19,6 +20,7 @@ import {
 import { EditRecipePage } from "./pages/editRecipePage/EditRecipePage";
 import { PrivateRoutes } from "./PrivateRoutes";
 import { ProfilePage } from "./pages/profilePage/ProfilePage";
+import { ForgotPasswordPage } from "./pages/forgotPasswordPage/ForgotPasswordPage";
 
 let emptyRecipe: Recipe = {
   id: "",
@@ -69,6 +71,7 @@ export function App() {
             element={<ProfilePage user={user} setUser={setUser} />}
           />
         </Route>
+        <Route path={forgotPasswordRoute} element={<ForgotPasswordPage />} />
         <Route path="*" element={<Navigate to={loginRoute} />} />
       </Routes>
     </BrowserRouter>
