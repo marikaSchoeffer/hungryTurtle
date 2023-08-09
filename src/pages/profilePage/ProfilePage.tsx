@@ -154,11 +154,10 @@ export function ProfilePage(props: ProfilePageProps) {
         >
           <DialogContent>
             <Typography>
-              Das Password muss mind. 8 Zeichen lang sein. Das Password darf
-              max. 16 Zeichen lang sein. Das Password muss mind. einen
-              Großbuchstaben, einen Kleinbuchstaben, eine Ziffer und ein
-              Sonderzeichen beinhalten. Das Password darf keine Leerzeichen
-              beinhalten.
+              <strong>Passwortanfoderungen:</strong>
+              <br /> zwischen 8 und 16 Zeichen lang, mind. einen Großbuchstaben,
+              einen Kleinbuchstaben, eine Ziffer, ein Sonderzeichen. <br /> Das
+              Password darf keine Leerzeichen beinhalten.
             </Typography>
           </DialogContent>
           <IconButton onClick={handleClickClosePasswordInfoDialog}>
