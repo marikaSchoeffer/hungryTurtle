@@ -11,13 +11,18 @@ import {
 } from "@mui/material";
 import { IconButton } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { User, signInWithEmailAndPassword } from "firebase/auth";
 
 import { primaryColor } from "../../style";
 import { overviewRoute } from "../routes";
 import { auth } from "../../firebase";
 
-export function LoginPage() {
+type LoginPageProps = {
+  //user: User | null;
+  setUser: (user: User | null) => void;
+};
+
+export function LoginPage(props: LoginPageProps) {
   const [userMail, setUserMail] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -28,6 +33,8 @@ export function LoginPage() {
   async function loginEmailPassword() {
     try {
       await signInWithEmailAndPassword(auth, userMail, userPassword);
+      const user = auth.currentUser;
+      props.setUser(user);
       return true;
     } catch (error) {
       return false;
