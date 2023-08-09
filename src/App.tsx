@@ -13,10 +13,12 @@ import {
   editRecipeRoute,
   loginRoute,
   overviewRoute,
+  profileRoute,
   recipeRoute,
 } from "./pages/routes";
 import { EditRecipePage } from "./pages/editRecipePage/EditRecipePage";
 import { PrivateRoutes } from "./PrivateRoutes";
+import { ProfilePage } from "./pages/profilePage/ProfilePage";
 
 let emptyRecipe: Recipe = {
   id: "",
@@ -35,10 +37,7 @@ export function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route
-          path={loginRoute}
-          element={<LoginPage /*user={user}*/ setUser={setUser} />}
-        />
+        <Route path={loginRoute} element={<LoginPage setUser={setUser} />} />
         <Route element={<PrivateRoutes user={user} />}>
           <Route
             path={overviewRoute}
@@ -64,6 +63,10 @@ export function App() {
                 setCurrentRecipe={setCurrentRecipe}
               />
             }
+          />
+          <Route
+            path={profileRoute}
+            element={<ProfilePage user={user} setUser={setUser} />}
           />
         </Route>
         <Route path="*" element={<Navigate to={loginRoute} />} />

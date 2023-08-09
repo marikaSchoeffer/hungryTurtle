@@ -18,7 +18,6 @@ import { overviewRoute } from "../routes";
 import { auth } from "../../firebase";
 
 type LoginPageProps = {
-  //user: User | null;
   setUser: (user: User | null) => void;
 };
 

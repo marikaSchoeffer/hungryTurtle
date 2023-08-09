@@ -3,11 +3,12 @@ import { useEffect } from "react";
 
 import { Box, Chip } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { collection, getDocs, query, where } from "firebase/firestore";
 
 import { RecipePreview } from "./RecipePreview";
 import { Recipe } from "../../types/Recipe";
-import { createRecipeRoute } from "../routes";
+import { createRecipeRoute, profileRoute } from "../routes";
 import { db } from "../../firebase";
 
 type OverviewPageProps = {
@@ -46,6 +47,10 @@ export function OverviewPage(props: OverviewPageProps) {
     navigate(createRecipeRoute);
   }
 
+  function handleClickProfileChip() {
+    navigate(profileRoute);
+  }
+
   return (
     <Box
       display="flex"
@@ -55,13 +60,20 @@ export function OverviewPage(props: OverviewPageProps) {
       rowGap="20px"
       paddingTop="20px"
     >
-      <Box>
+      <Box display="flex" justifyContent="space-evenly" gap="10px">
         <Chip
           icon={<AddCircleIcon />}
           label="Rezept"
           color="primary"
           variant="outlined"
           onClick={handleClickRecipeChip}
+        />
+        <Chip
+          icon={<AccountCircleIcon />}
+          label="Profil"
+          color="primary"
+          variant="outlined"
+          onClick={handleClickProfileChip}
         />
       </Box>
 
