@@ -84,6 +84,10 @@ export function OverviewPage(props: OverviewPageProps) {
         flexDirection="row"
         flexWrap="wrap"
         gap="20px"
+        style={{
+          overflow: "hidden",
+          overflowY: "scroll",
+        }}
       >
         {props.recipes.map((recipe, i) => {
           return (
