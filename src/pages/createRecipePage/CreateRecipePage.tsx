@@ -9,6 +9,7 @@ import { Recipe } from "../../types/Recipe";
 import { overviewRoute } from "../routes";
 import { createGuid } from "../../lib/createGuid";
 import { db } from "../../firebase";
+import { Close } from "@mui/icons-material";
 
 export function CreateRecipePage() {
   const [recipeTitle, setRecipeTitle] = useState("");
@@ -40,6 +41,10 @@ export function CreateRecipePage() {
     navigate(overviewRoute);
   }
 
+  function handleClickCloseCreateRecipe() {
+    navigate(overviewRoute);
+  }
+
   return (
     <Box
       display="flex"
@@ -57,6 +62,11 @@ export function CreateRecipePage() {
         elevation={4}
       >
         <Box display="flex" flexDirection="column" width="100%" rowGap="20px">
+          <Box display="flex" width="100%" justifyContent="right">
+            <IconButton color="primary" onClick={handleClickCloseCreateRecipe}>
+              <Close />
+            </IconButton>
+          </Box>
           <TextField
             variant="outlined"
             label="Rezepttitel"

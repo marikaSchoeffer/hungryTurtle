@@ -131,9 +131,11 @@ export function ProfilePage(props: ProfilePageProps) {
           </Box>
 
           <Divider color={primaryColor} />
-          <IconButton color="primary" onClick={handleClickBackToOverview}>
-            <AppsIcon />
-          </IconButton>
+          <Box display="flex" justifyContent="center">
+            <IconButton color="primary" onClick={handleClickBackToOverview}>
+              <AppsIcon />
+            </IconButton>
+          </Box>
         </Box>
 
         <Dialog

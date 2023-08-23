@@ -6,10 +6,12 @@ import {
   Avatar,
   Box,
   Button,
+  IconButton,
   Paper,
   TextField,
   Typography,
 } from "@mui/material";
+import { Close } from "@mui/icons-material";
 import { sendPasswordResetEmail } from "firebase/auth";
 
 import { primaryColor } from "../../style";
@@ -20,6 +22,10 @@ export function ForgotPasswordPage() {
   const [userMail, setUserMail] = useState("");
 
   const navigate = useNavigate();
+
+  function handleClickCloseForgotPassword() {
+    navigate(loginRoute);
+  }
 
   async function handleClickRestPassword() {
     try {
@@ -53,33 +59,35 @@ export function ForgotPasswordPage() {
           alignItems="center"
           rowGap="30px"
         >
+          <Box display="flex" width="100%" justifyContent="right">
+            <IconButton
+              color="primary"
+              onClick={handleClickCloseForgotPassword}
+            >
+              <Close />
+            </IconButton>
+          </Box>
+
           <Box
             display="flex"
             flexDirection="column"
             justifyContent="center"
             alignItems="center"
           >
-            <Link
-              to={loginRoute}
+            <Avatar
+              alt="A turtle with a baseball cap"
+              src="./image/hungryTurtle.png"
               style={{
-                color: "grey",
-                textDecoration: "inherit",
+                width: "100px",
+                height: "100px",
               }}
-            >
-              <Avatar
-                alt="A turtle with a baseball cap"
-                src="./image/hungryTurtle.png"
-                style={{
-                  width: "100px",
-                  height: "100px",
-                }}
-              />
-              <Typography color={primaryColor} variant="h5">
-                Hungry Turtle
-              </Typography>
-            </Link>
+            />
+            <Typography color={primaryColor} variant="h5">
+              Hungry Turtle
+            </Typography>
           </Box>
-          <Box display="flex" flexDirection="column" rowGap="20px" width="100%">
+
+          <Box display="flex" flexDirection="column" width="100%">
             <TextField
               //error={isFormInvalid}
               type="email"
