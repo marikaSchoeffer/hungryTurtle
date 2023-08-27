@@ -5,4 +5,5 @@ export type Recipe = {
   ingredients: string;
   description: string;
   deleted: boolean;
+  imageURL: string;
 };

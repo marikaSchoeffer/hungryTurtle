@@ -33,6 +33,7 @@ export function OverviewPage(props: OverviewPageProps) {
           ingredients: doc.data().ingredients,
           description: doc.data().description,
           deleted: doc.data().deleted,
+          imageURL: doc.data().imageURL,
         };
         recipes.push(recipe);
       });

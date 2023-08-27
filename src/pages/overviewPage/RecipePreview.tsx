@@ -26,7 +26,11 @@ export function RecipePreview(props: RecipePreviewProps) {
         <Card style={{ width: "300px" }}>
           <CardMedia
             component="img"
-            image="./image/hungryTurtle.png"
+            image={
+              props.recipe.imageURL === ""
+                ? "./image/hungryTurtle.png"
+                : props.recipe.imageURL
+            }
             height="100px"
           />
           <Typography variant="body1">{props.recipe.title}</Typography>
