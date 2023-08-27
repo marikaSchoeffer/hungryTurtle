@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import {
   Avatar,
@@ -14,7 +15,7 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { User, signInWithEmailAndPassword } from "firebase/auth";
 
 import { primaryColor } from "../../style";
-import { overviewRoute } from "../routes";
+import { forgotPasswordRoute, overviewRoute } from "../routes";
 import { auth } from "../../firebase";
 
 type LoginPageProps = {
@@ -56,6 +57,10 @@ export function LoginPage(props: LoginPageProps) {
     } else {
       setShowPassword(true);
     }
+  }
+
+  function handleClickLinkForgotPassword() {
+    navigate(forgotPasswordRoute);
   }
 
   return (
@@ -131,8 +136,17 @@ export function LoginPage(props: LoginPageProps) {
               }}
               type={showPassword === false ? "password" : "text"}
             />
+            <Link
+              to={forgotPasswordRoute}
+              onClick={handleClickLinkForgotPassword}
+              style={{
+                color: "grey",
+                textDecoration: "inherit",
+              }}
+            >
+              <Typography variant="caption">Passwort vergessen?</Typography>
+            </Link>
           </Box>
-
           <Box
             display="flex"
             justifyContent="center"
