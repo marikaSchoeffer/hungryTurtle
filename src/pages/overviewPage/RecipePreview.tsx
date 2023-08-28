@@ -14,7 +14,7 @@ export function RecipePreview(props: RecipePreviewProps) {
   }
 
   return (
-    <Box style={{ padding: "5px" }}>
+    <Box sx={{ padding: "5px" }}>
       <Link
         to={`${props.recipe.id}`}
         onClick={handleClickLink}

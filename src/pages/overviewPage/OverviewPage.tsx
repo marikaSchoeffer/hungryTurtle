@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
-import { Box, Chip } from "@mui/material";
+import { Box, Chip, Pagination, Paper } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { collection, getDocs, query, where } from "firebase/firestore";
@@ -19,6 +19,14 @@ type OverviewPageProps = {
 };
 
 export function OverviewPage(props: OverviewPageProps) {
+  const pageSize = 9; //Variable auslagern?
+
+  const [pagination, setPagination] = useState({
+    count: 0,
+    from: 0,
+    to: pageSize,
+  });
+
   useEffect(() => {
     const fetchData = async () => {
       const q = query(collection(db, "recipes"), where("deleted", "==", false));
@@ -39,7 +47,8 @@ export function OverviewPage(props: OverviewPageProps) {
       props.setRecipes(recipes);
     };
     fetchData();
-  }, []);
+    setPagination({ ...pagination, count: props.recipes.length });
+  }, [pagination.from, pagination.to]);
 
   const navigate = useNavigate();
 
@@ -51,13 +60,21 @@ export function OverviewPage(props: OverviewPageProps) {
     navigate(profileRoute);
   }
 
+  function handleChangePage(event: any, page: any) {
+    const from = (page - 1) * pageSize;
+    const to = (page - 1) * pageSize + pageSize;
+
+    setPagination({ ...pagination, from: from, to: to });
+    console.log(pagination);
+  }
+
   return (
     <Box
       display="flex"
       flexDirection="column"
       justifyContent="center"
       alignItems="center"
-      rowGap="20px"
+      rowGap="10px"
       paddingTop="20px"
     >
       <Box display="flex" justifyContent="space-evenly" gap="10px">
@@ -89,15 +106,52 @@ export function OverviewPage(props: OverviewPageProps) {
           overflowY: "scroll",
         }}
       >
-        {props.recipes.map((recipe, i) => {
-          return (
-            <RecipePreview
-              key={i}
-              recipe={recipe}
-              setCurrentRecipe={props.setCurrentRecipe}
+        <Paper
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 2,
+            width: "100%",
+            padding: "10px",
+            margin: "10px",
+            borderRadius: "lg",
+            boxShadow: "lg",
+          }}
+          elevation={4}
+        >
+          <Box
+            display="flex"
+            gap="25px"
+            flexDirection="row"
+            flexWrap="wrap"
+            justifyContent="center"
+          >
+            {props.recipes
+              .slice(pagination.from, pagination.to)
+              .map((recipe, i) => {
+                return (
+                  <RecipePreview
+                    key={i}
+                    recipe={recipe}
+                    setCurrentRecipe={props.setCurrentRecipe}
+                  />
+                );
+              })}
+          </Box>
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            sx={{ padding: "5px" }}
+          >
+            <Pagination
+              count={Math.ceil(pagination.count / pageSize)}
+              variant="outlined"
+              color="primary"
+              onChange={handleChangePage}
             />
-          );
-        })}
+          </Box>
+        </Paper>
       </Box>
     </Box>
   );
