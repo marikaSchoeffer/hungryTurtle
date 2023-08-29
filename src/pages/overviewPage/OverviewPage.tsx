@@ -65,7 +65,6 @@ export function OverviewPage(props: OverviewPageProps) {
     const to = (page - 1) * pageSize + pageSize;
 
     setPagination({ ...pagination, from: from, to: to });
-    console.log(pagination);
   }
 
   return (
