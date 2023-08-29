@@ -43,12 +43,12 @@ export function OverviewPage(props: OverviewPageProps) {
           deleted: doc.data().deleted,
         };
         recipes.push(recipe);
+        setPagination({ ...pagination, count: recipes.length });
       });
       props.setRecipes(recipes);
     };
     fetchData();
-    setPagination({ ...pagination, count: props.recipes.length });
-  }, [pagination.from, pagination.to]);
+  }, []);
 
   const navigate = useNavigate();
 
@@ -99,18 +99,15 @@ export function OverviewPage(props: OverviewPageProps) {
         alignItems="center"
         flexDirection="row"
         flexWrap="wrap"
-        gap="20px"
-        style={{
-          overflow: "hidden",
-          overflowY: "scroll",
-        }}
+        width="100%"
       >
         <Paper
           style={{
             display: "flex",
             flexDirection: "column",
+            width: "1020px",
+            minHeight: "500px",
             gap: 2,
-            width: "100%",
             padding: "10px",
             margin: "10px",
             borderRadius: "lg",
@@ -140,7 +137,7 @@ export function OverviewPage(props: OverviewPageProps) {
           <Box
             display="flex"
             justifyContent="center"
-            alignItems="center"
+            marginTop="auto"
             sx={{ padding: "5px" }}
           >
             <Pagination
