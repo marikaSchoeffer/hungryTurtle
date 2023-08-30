@@ -23,7 +23,7 @@ export function RecipePreview(props: RecipePreviewProps) {
           textDecoration: "inherit",
         }}
       >
-        <Card style={{ width: "300px" }}>
+        <Card sx={{ width: "300px" }}>
           <CardMedia
             component="img"
             image={
@@ -33,7 +33,9 @@ export function RecipePreview(props: RecipePreviewProps) {
             }
             height="100px"
           />
-          <Typography variant="body1">{props.recipe.title}</Typography>
+          <Typography variant="body1" color="primary">
+            {props.recipe.title}
+          </Typography>
         </Card>
       </Link>
     </Box>
