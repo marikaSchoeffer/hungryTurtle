@@ -58,6 +58,15 @@ export function RecipePage(props: RecipePageProps) {
             {props.currentRecipe.title}
           </Typography>
 
+          <img
+            src={
+              props.currentRecipe.imageURL === ""
+                ? "../image/hungryTurtle.png"
+                : props.currentRecipe.imageURL
+            }
+            alt={props.currentRecipe.title}
+          />
+
           <Typography variant="h6">
             Dauer: {props.currentRecipe.duration} Minuten
           </Typography>

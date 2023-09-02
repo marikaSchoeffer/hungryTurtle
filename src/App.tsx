@@ -29,6 +29,7 @@ let emptyRecipe: Recipe = {
   ingredients: "",
   description: "",
   deleted: false,
+  imageURL: "",
 };
 
 export function App() {

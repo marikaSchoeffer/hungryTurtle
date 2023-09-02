@@ -47,6 +47,7 @@ export function EditRecipePage(props: EditRecipeProps) {
       ingredients: recipeIngredients,
       description: recipeDescription,
       deleted: false,
+      imageURL: props.currentRecipe.imageURL,
     };
 
     const updateTarget = doc(db, "recipes", props.currentRecipe.id);
