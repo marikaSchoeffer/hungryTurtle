@@ -10,6 +10,7 @@ import { RecipePreview } from "./RecipePreview";
 import { Recipe } from "../../types/Recipe";
 import { createRecipeRoute, profileRoute } from "../routes";
 import { db } from "../../firebase";
+import { pageSize } from "../../style";
 
 type OverviewPageProps = {
   recipes: Recipe[];
@@ -19,8 +20,6 @@ type OverviewPageProps = {
 };
 
 export function OverviewPage(props: OverviewPageProps) {
-  const pageSize = 9; //Variable auslagern?
-
   const [pagination, setPagination] = useState({
     count: 0,
     from: 0,
@@ -61,7 +60,7 @@ export function OverviewPage(props: OverviewPageProps) {
     navigate(profileRoute);
   }
 
-  function handleChangePage(event: any, page: any) {
+  function handleChangePage(page: number) {
     const from = (page - 1) * pageSize;
     const to = (page - 1) * pageSize + pageSize;
 
@@ -145,7 +144,7 @@ export function OverviewPage(props: OverviewPageProps) {
               count={Math.ceil(pagination.count / pageSize)}
               variant="outlined"
               color="primary"
-              onChange={handleChangePage}
+              onChange={(_, page) => handleChangePage(page)}
             />
           </Box>
         </Paper>
