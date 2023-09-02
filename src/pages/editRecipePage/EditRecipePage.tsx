@@ -38,8 +38,6 @@ export function EditRecipePage(props: EditRecipeProps) {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 
   const navigate = useNavigate();
-  const urlLink =
-    props.currentRecipe.imageURL === "" ? "" : props.currentRecipe.imageURL;
 
   async function handleClickEditRecipe() {
     let recipeObj: Recipe = {
@@ -49,7 +47,7 @@ export function EditRecipePage(props: EditRecipeProps) {
       ingredients: recipeIngredients,
       description: recipeDescription,
       deleted: false,
-      imageURL: urlLink,
+      imageURL: props.currentRecipe.imageURL,
     };
 
     const updateTarget = doc(db, "recipes", props.currentRecipe.id);
