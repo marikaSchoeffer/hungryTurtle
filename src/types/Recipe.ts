@@ -6,4 +6,5 @@ export type Recipe = {
   description: string;
   deleted: boolean;
   imageURL: string;
+  userId: string | undefined;
 };
