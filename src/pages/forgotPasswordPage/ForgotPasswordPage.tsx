@@ -96,7 +96,6 @@ export function ForgotPasswordPage() {
 
           <Box display="flex" flexDirection="column" width="100%">
             <TextField
-              //error={isFormInvalid}
               type="email"
               label="E-Mail"
               variant="outlined"
