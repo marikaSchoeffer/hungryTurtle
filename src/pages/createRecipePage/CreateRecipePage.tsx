@@ -73,7 +73,6 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
   function handleOnChangeFile(event: React.ChangeEvent<HTMLInputElement>) {
     if (event.target.files !== null) {
       let file = event.target.files[0];
-      console.log(file);
       setImageUpload(file);
     }
   }

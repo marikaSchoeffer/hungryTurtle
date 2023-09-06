@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
 
 import {
   Avatar,
@@ -8,18 +7,21 @@ import {
   Button,
   IconButton,
   Paper,
+  Snackbar,
   TextField,
   Typography,
 } from "@mui/material";
 import { Close } from "@mui/icons-material";
+import TaskAltIcon from "@mui/icons-material/TaskAlt";
 import { sendPasswordResetEmail } from "firebase/auth";
 
-import { primaryColor } from "../../style";
+import { StyledAlert, primaryColor } from "../../style";
 import { auth } from "../../firebase";
 import { loginRoute } from "../routes";
 
 export function ForgotPasswordPage() {
   const [userMail, setUserMail] = useState("");
+  const [open, setOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -27,9 +29,14 @@ export function ForgotPasswordPage() {
     navigate(loginRoute);
   }
 
+  function handleClose() {
+    setOpen(false);
+  }
+
   async function handleClickRestPassword() {
     try {
       await sendPasswordResetEmail(auth, userMail);
+      //setOpen(true);
       navigate(loginRoute);
     } catch (error) {
       console.log(error);
@@ -112,6 +119,21 @@ export function ForgotPasswordPage() {
             >
               Passwort zurücksetzen
             </Button>
+            <Snackbar
+              anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+              key={"bottom" + "center"}
+              open={open}
+              autoHideDuration={2500}
+              onClose={handleClose}
+            >
+              <StyledAlert
+                severity="success"
+                variant="outlined"
+                icon={<TaskAltIcon color="primary" />}
+              >
+                Mail wurde versand
+              </StyledAlert>
+            </Snackbar>
           </Box>
         </Box>
       </Paper>
