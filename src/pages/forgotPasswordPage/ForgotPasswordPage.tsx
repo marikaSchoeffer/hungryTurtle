@@ -36,8 +36,8 @@ export function ForgotPasswordPage() {
   async function handleClickRestPassword() {
     try {
       await sendPasswordResetEmail(auth, userMail);
-      //setOpen(true);
-      navigate(loginRoute);
+      setOpen(true);
+      setTimeout(() => navigate(loginRoute), 3000);
     } catch (error) {
       console.log(error);
     }
@@ -123,7 +123,7 @@ export function ForgotPasswordPage() {
               anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
               key={"bottom" + "center"}
               open={open}
-              autoHideDuration={2500}
+              autoHideDuration={1500}
               onClose={handleClose}
             >
               <StyledAlert

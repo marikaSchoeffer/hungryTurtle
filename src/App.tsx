@@ -37,6 +37,7 @@ export function App() {
   const [currentRecipe, setCurrentRecipe] = useState<Recipe>(emptyRecipe);
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [user, setUser] = useState<User | null>(null);
+  const [imageUpload, setImageUpload] = useState<File | null>(null);
 
   return (
     <BrowserRouter>
@@ -61,7 +62,13 @@ export function App() {
           />
           <Route
             path={createRecipeRoute}
-            element={<CreateRecipePage user={user} />}
+            element={
+              <CreateRecipePage
+                user={user}
+                imageUpload={imageUpload}
+                setImageUpload={setImageUpload}
+              />
+            }
           />
           <Route
             path={editRecipeRoute}
@@ -69,6 +76,8 @@ export function App() {
               <EditRecipePage
                 currentRecipe={currentRecipe}
                 setCurrentRecipe={setCurrentRecipe}
+                imageUpload={imageUpload}
+                setImageUpload={setImageUpload}
               />
             }
           />

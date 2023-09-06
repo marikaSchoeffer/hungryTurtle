@@ -6,15 +6,17 @@ import { Close } from "@mui/icons-material";
 import CheckIcon from "@mui/icons-material/Check";
 import { doc, setDoc } from "firebase/firestore";
 import { User } from "firebase/auth";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 import { Recipe } from "../../types/Recipe";
 import { overviewRoute } from "../routes";
 import { createGuid } from "../../lib/createGuid";
 import { db, storage } from "../../firebase";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 type CreateRecipePageProps = {
   user: User | null;
+  imageUpload: File | null;
+  setImageUpload: (imageUpload: File | null) => void;
 };
 
 export function CreateRecipePage(props: CreateRecipePageProps) {
@@ -22,19 +24,18 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
   const [recipeDuration, setRecipeDuration] = useState("");
   const [recipeIngredients, setRecipeIngredients] = useState("");
   const [recipeDescription, setRecipeDescription] = useState("");
-  const [imageUpload, setImageUpload] = useState<File | null>(null);
 
   const navigate = useNavigate();
 
   async function handleClickCreateRecipe() {
     let urlLink = "";
 
-    if (imageUpload !== null) {
+    if (props.imageUpload !== null) {
       const imageRefName = createGuid();
       const imageRef = ref(storage, imageRefName);
 
       try {
-        await uploadBytes(imageRef, imageUpload);
+        await uploadBytes(imageRef, props.imageUpload);
         urlLink = await getDownloadURL(ref(storage, imageRefName));
       } catch (error) {
         console.log(error);
@@ -60,20 +61,20 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
     setRecipeDuration("");
     setRecipeIngredients("");
     setRecipeDescription("");
-    setImageUpload(null);
+    props.setImageUpload(null);
 
     navigate(overviewRoute);
   }
 
   function handleClickCloseCreateRecipe() {
-    setImageUpload(null);
+    props.setImageUpload(null);
     navigate(overviewRoute);
   }
 
   function handleOnChangeFile(event: React.ChangeEvent<HTMLInputElement>) {
     if (event.target.files !== null) {
       let file = event.target.files[0];
-      setImageUpload(file);
+      props.setImageUpload(file);
     }
   }
 
