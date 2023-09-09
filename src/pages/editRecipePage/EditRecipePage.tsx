@@ -24,8 +24,6 @@ import { createGuid } from "../../lib/createGuid";
 type EditRecipeProps = {
   currentRecipe: Recipe;
   setCurrentRecipe: (recipe: Recipe) => void;
-  imageUpload: File | null;
-  setImageUpload: (imageUpload: File | null) => void;
 };
 
 export function EditRecipePage(props: EditRecipeProps) {
@@ -39,6 +37,7 @@ export function EditRecipePage(props: EditRecipeProps) {
   const [recipeDescription, setRecipeDescription] = useState(
     props.currentRecipe.description
   );
+  const [imageUpload, setImageUpload] = useState<File | null>(null);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 
   const navigate = useNavigate();
@@ -46,12 +45,12 @@ export function EditRecipePage(props: EditRecipeProps) {
   async function handleClickEditRecipe() {
     let urlLink = "";
 
-    if (props.imageUpload !== null) {
+    if (imageUpload !== null) {
       const imageRefName = createGuid();
       const imageRef = ref(storage, imageRefName);
 
       try {
-        await uploadBytes(imageRef, props.imageUpload);
+        await uploadBytes(imageRef, imageUpload);
         urlLink = await getDownloadURL(ref(storage, imageRefName));
       } catch (error) {
         console.log(error);
@@ -65,8 +64,7 @@ export function EditRecipePage(props: EditRecipeProps) {
       ingredients: recipeIngredients,
       description: recipeDescription,
       deleted: false,
-      imageURL:
-        props.imageUpload !== null ? urlLink : props.currentRecipe.imageURL,
+      imageURL: imageUpload !== null ? urlLink : props.currentRecipe.imageURL,
       userId: props.currentRecipe.userId,
     };
 
@@ -74,7 +72,7 @@ export function EditRecipePage(props: EditRecipeProps) {
     await updateDoc(updateTarget, recipeObj);
 
     props.setCurrentRecipe(recipeObj);
-    props.setImageUpload(null);
+    setImageUpload(null);
     navigate(recipeRoute);
   }
 
@@ -97,7 +95,7 @@ export function EditRecipePage(props: EditRecipeProps) {
   function handleOnChangeFile(event: React.ChangeEvent<HTMLInputElement>) {
     if (event.target.files !== null) {
       let file = event.target.files[0];
-      props.setImageUpload(file);
+      setImageUpload(file);
     }
   }
 

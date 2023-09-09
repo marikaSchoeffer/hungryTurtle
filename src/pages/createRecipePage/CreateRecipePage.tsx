@@ -15,8 +15,6 @@ import { db, storage } from "../../firebase";
 
 type CreateRecipePageProps = {
   user: User | null;
-  imageUpload: File | null;
-  setImageUpload: (imageUpload: File | null) => void;
 };
 
 export function CreateRecipePage(props: CreateRecipePageProps) {
@@ -24,18 +22,19 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
   const [recipeDuration, setRecipeDuration] = useState("");
   const [recipeIngredients, setRecipeIngredients] = useState("");
   const [recipeDescription, setRecipeDescription] = useState("");
+  const [imageUpload, setImageUpload] = useState<File | null>(null);
 
   const navigate = useNavigate();
 
   async function handleClickCreateRecipe() {
     let urlLink = "";
 
-    if (props.imageUpload !== null) {
+    if (imageUpload !== null) {
       const imageRefName = createGuid();
       const imageRef = ref(storage, imageRefName);
 
       try {
-        await uploadBytes(imageRef, props.imageUpload);
+        await uploadBytes(imageRef, imageUpload);
         urlLink = await getDownloadURL(ref(storage, imageRefName));
       } catch (error) {
         console.log(error);
@@ -61,20 +60,20 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
     setRecipeDuration("");
     setRecipeIngredients("");
     setRecipeDescription("");
-    props.setImageUpload(null);
+    setImageUpload(null);
 
     navigate(overviewRoute);
   }
 
   function handleClickCloseCreateRecipe() {
-    props.setImageUpload(null);
+    setImageUpload(null);
     navigate(overviewRoute);
   }
 
   function handleOnChangeFile(event: React.ChangeEvent<HTMLInputElement>) {
     if (event.target.files !== null) {
       let file = event.target.files[0];
-      props.setImageUpload(file);
+      setImageUpload(file);
     }
   }
 
