@@ -52,7 +52,7 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
       description: recipeDescription,
       deleted: false,
       imageURL: urlLink,
-      userId: props.user?.uid,
+      userId: props.user !== null ? props.user.uid : "",
     };
 
     await setDoc(doc(db, "recipes", id), recipeObj); //Write recipe to database
