@@ -40,7 +40,6 @@ export function EditRecipePage(props: EditRecipeProps) {
     props.currentRecipe.description
   );
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-  const [isUpload, setIsUpload] = useState(false);
 
   const navigate = useNavigate();
 
@@ -66,15 +65,10 @@ export function EditRecipePage(props: EditRecipeProps) {
       ingredients: recipeIngredients,
       description: recipeDescription,
       deleted: false,
-      imageURL: "",
+      imageURL:
+        props.imageUpload !== null ? urlLink : props.currentRecipe.imageURL,
       userId: props.currentRecipe.userId,
     };
-
-    if (isUpload) {
-      recipeObj.imageURL = urlLink;
-    } else {
-      recipeObj.imageURL = props.currentRecipe.imageURL;
-    }
 
     const updateTarget = doc(db, "recipes", props.currentRecipe.id);
     await updateDoc(updateTarget, recipeObj);
@@ -104,7 +98,6 @@ export function EditRecipePage(props: EditRecipeProps) {
     if (event.target.files !== null) {
       let file = event.target.files[0];
       props.setImageUpload(file);
-      setIsUpload(true);
     }
   }
 

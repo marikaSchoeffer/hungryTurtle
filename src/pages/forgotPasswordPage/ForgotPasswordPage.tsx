@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {
+  Alert,
   Avatar,
   Box,
   Button,
@@ -15,13 +16,13 @@ import { Close } from "@mui/icons-material";
 import TaskAltIcon from "@mui/icons-material/TaskAlt";
 import { sendPasswordResetEmail } from "firebase/auth";
 
-import { StyledAlert, primaryColor } from "../../style";
+import { primaryColor } from "../../style";
 import { auth } from "../../firebase";
 import { loginRoute } from "../routes";
 
 export function ForgotPasswordPage() {
   const [userMail, setUserMail] = useState("");
-  const [open, setOpen] = useState(false);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
 
   const navigate = useNavigate();
 
@@ -29,14 +30,14 @@ export function ForgotPasswordPage() {
     navigate(loginRoute);
   }
 
-  function handleClose() {
-    setOpen(false);
+  function handleCloseSnackbar() {
+    setOpenSnackbar(false);
   }
 
   async function handleClickRestPassword() {
     try {
       await sendPasswordResetEmail(auth, userMail);
-      setOpen(true);
+      setOpenSnackbar(true);
       setTimeout(() => navigate(loginRoute), 3000);
     } catch (error) {
       console.log(error);
@@ -120,18 +121,20 @@ export function ForgotPasswordPage() {
             </Button>
             <Snackbar
               anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-              key={"bottom" + "center"}
-              open={open}
+              open={openSnackbar}
               autoHideDuration={1500}
-              onClose={handleClose}
+              onClose={handleCloseSnackbar}
             >
-              <StyledAlert
-                severity="success"
+              <Alert
                 variant="outlined"
+                sx={{
+                  backgroundColor: "#fcecfc",
+                  borderColor: primaryColor,
+                }}
                 icon={<TaskAltIcon color="primary" />}
               >
                 Mail wurde versand
-              </StyledAlert>
+              </Alert>
             </Snackbar>
           </Box>
         </Box>
