@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import AppsIcon from "@mui/icons-material/Apps";
 import EditIcon from "@mui/icons-material/Edit";
+import { User } from "firebase/auth";
 
 import { primaryColor } from "../../style";
 import { Recipe } from "../../types/Recipe";
@@ -17,6 +18,7 @@ import { editRecipeRoute, overviewRoute } from "../routes";
 
 type RecipePageProps = {
   currentRecipe: Recipe;
+  user: User | null;
 };
 
 export function RecipePage(props: RecipePageProps) {
@@ -112,7 +114,11 @@ export function RecipePage(props: RecipePageProps) {
           </Box>
         </Box>
         <Box display="flex" justifyContent="center">
-          <IconButton color="primary" onClick={handleClickEditRecipe}>
+          <IconButton
+            disabled={props.currentRecipe.userId !== props.user?.uid}
+            color="primary"
+            onClick={handleClickEditRecipe}
+          >
             <EditIcon />
           </IconButton>
 

@@ -5,6 +5,7 @@ import { TextField, Box, Paper, IconButton } from "@mui/material";
 import { Close } from "@mui/icons-material";
 import CheckIcon from "@mui/icons-material/Check";
 import { doc, setDoc } from "firebase/firestore";
+import { User } from "firebase/auth";
 
 import { Recipe } from "../../types/Recipe";
 import { overviewRoute } from "../routes";
@@ -12,7 +13,11 @@ import { createGuid } from "../../lib/createGuid";
 import { db, storage } from "../../firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
-export function CreateRecipePage() {
+type CreateRecipePageProps = {
+  user: User | null;
+};
+
+export function CreateRecipePage(props: CreateRecipePageProps) {
   const [recipeTitle, setRecipeTitle] = useState("");
   const [recipeDuration, setRecipeDuration] = useState("");
   const [recipeIngredients, setRecipeIngredients] = useState("");
@@ -46,6 +51,7 @@ export function CreateRecipePage() {
       description: recipeDescription,
       deleted: false,
       imageURL: urlLink,
+      userId: props.user?.uid,
     };
 
     await setDoc(doc(db, "recipes", id), recipeObj); //Write recipe to database
