@@ -162,9 +162,11 @@ export function ProfilePage(props: ProfilePageProps) {
               Password darf keine Leerzeichen beinhalten.
             </Typography>
           </DialogContent>
-          <IconButton onClick={handleClickClosePasswordInfoDialog}>
-            <CheckIcon />
-          </IconButton>
+          <Box display="flex" justifyContent="center">
+            <IconButton onClick={handleClickClosePasswordInfoDialog}>
+              <CheckIcon />
+            </IconButton>
+          </Box>
         </Dialog>
       </Paper>
     </Box>

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { doc, updateDoc } from "firebase/firestore";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import {
   Box,
   Button,
@@ -15,9 +16,10 @@ import {
 import CheckIcon from "@mui/icons-material/Check";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-import { db } from "../../firebase";
+import { db, storage } from "../../firebase";
 import { Recipe } from "../../types/Recipe";
 import { overviewRoute, recipeRoute } from "../routes";
+import { createGuid } from "../../lib/createGuid";
 
 type EditRecipeProps = {
   currentRecipe: Recipe;
@@ -35,11 +37,26 @@ export function EditRecipePage(props: EditRecipeProps) {
   const [recipeDescription, setRecipeDescription] = useState(
     props.currentRecipe.description
   );
+  const [imageUpload, setImageUpload] = useState<File | null>(null);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 
   const navigate = useNavigate();
 
   async function handleClickEditRecipe() {
+    let urlLink = "";
+
+    if (imageUpload !== null) {
+      const imageRefName = createGuid();
+      const imageRef = ref(storage, imageRefName);
+
+      try {
+        await uploadBytes(imageRef, imageUpload);
+        urlLink = await getDownloadURL(ref(storage, imageRefName));
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
     let recipeObj: Recipe = {
       id: props.currentRecipe.id,
       title: recipeTitle,
@@ -47,7 +64,7 @@ export function EditRecipePage(props: EditRecipeProps) {
       ingredients: recipeIngredients,
       description: recipeDescription,
       deleted: false,
-      imageURL: props.currentRecipe.imageURL,
+      imageURL: imageUpload !== null ? urlLink : props.currentRecipe.imageURL,
       userId: props.currentRecipe.userId,
     };
 
@@ -55,6 +72,7 @@ export function EditRecipePage(props: EditRecipeProps) {
     await updateDoc(updateTarget, recipeObj);
 
     props.setCurrentRecipe(recipeObj);
+    setImageUpload(null);
     navigate(recipeRoute);
   }
 
@@ -74,6 +92,13 @@ export function EditRecipePage(props: EditRecipeProps) {
     setOpenDeleteDialog(false);
   }
 
+  function handleOnChangeFile(event: React.ChangeEvent<HTMLInputElement>) {
+    if (event.target.files !== null) {
+      let file = event.target.files[0];
+      setImageUpload(file);
+    }
+  }
+
   return (
     <Box
       display="flex"
@@ -91,6 +116,7 @@ export function EditRecipePage(props: EditRecipeProps) {
         elevation={4}
       >
         <Box display="flex" flexDirection="column" width="100%" rowGap="20px">
+          <input type="file" accept="image/*" onChange={handleOnChangeFile} />
           <TextField
             variant="outlined"
             label="Rezepttitel"

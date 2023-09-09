@@ -1,14 +1,12 @@
 import { Link } from "react-router-dom";
 
 import { Box, Card, CardMedia, Typography } from "@mui/material";
-import { User } from "firebase/auth";
 
 import { Recipe } from "../../types/Recipe";
 
 type RecipePreviewProps = {
   recipe: Recipe;
   setCurrentRecipe: (recipe: Recipe) => void;
-  user: User | null;
 };
 
 export function RecipePreview(props: RecipePreviewProps) {

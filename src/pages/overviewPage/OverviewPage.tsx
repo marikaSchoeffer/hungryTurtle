@@ -5,7 +5,6 @@ import { Box, Chip, Pagination, Paper } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { collection, getDocs, query, where } from "firebase/firestore";
-import { User } from "firebase/auth";
 
 import { RecipePreview } from "./RecipePreview";
 import { Recipe } from "../../types/Recipe";
@@ -18,7 +17,6 @@ type OverviewPageProps = {
   setRecipes: (recipe: Recipe[]) => void;
   currentRecipe: Recipe | null;
   setCurrentRecipe: (currentRecipe: Recipe) => void;
-  user: User | null;
 };
 
 export function OverviewPage(props: OverviewPageProps) {
@@ -133,7 +131,6 @@ export function OverviewPage(props: OverviewPageProps) {
                     key={i}
                     recipe={recipe}
                     setCurrentRecipe={props.setCurrentRecipe}
-                    user={props.user}
                   />
                 );
               })}

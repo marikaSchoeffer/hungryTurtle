@@ -6,12 +6,12 @@ import { Close } from "@mui/icons-material";
 import CheckIcon from "@mui/icons-material/Check";
 import { doc, setDoc } from "firebase/firestore";
 import { User } from "firebase/auth";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 import { Recipe } from "../../types/Recipe";
 import { overviewRoute } from "../routes";
 import { createGuid } from "../../lib/createGuid";
 import { db, storage } from "../../firebase";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 type CreateRecipePageProps = {
   user: User | null;
@@ -51,7 +51,7 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
       description: recipeDescription,
       deleted: false,
       imageURL: urlLink,
-      userId: props.user?.uid,
+      userId: props.user !== null ? props.user.uid : "",
     };
 
     await setDoc(doc(db, "recipes", id), recipeObj); //Write recipe to database
@@ -73,7 +73,6 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
   function handleOnChangeFile(event: React.ChangeEvent<HTMLInputElement>) {
     if (event.target.files !== null) {
       let file = event.target.files[0];
-      console.log(file);
       setImageUpload(file);
     }
   }

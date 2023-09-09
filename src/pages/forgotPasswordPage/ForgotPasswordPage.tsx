@@ -1,17 +1,19 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
 
 import {
+  Alert,
   Avatar,
   Box,
   Button,
   IconButton,
   Paper,
+  Snackbar,
   TextField,
   Typography,
 } from "@mui/material";
 import { Close } from "@mui/icons-material";
+import TaskAltIcon from "@mui/icons-material/TaskAlt";
 import { sendPasswordResetEmail } from "firebase/auth";
 
 import { primaryColor } from "../../style";
@@ -20,6 +22,7 @@ import { loginRoute } from "../routes";
 
 export function ForgotPasswordPage() {
   const [userMail, setUserMail] = useState("");
+  const [openSnackbar, setOpenSnackbar] = useState(false);
 
   const navigate = useNavigate();
 
@@ -27,10 +30,15 @@ export function ForgotPasswordPage() {
     navigate(loginRoute);
   }
 
+  function handleCloseSnackbar() {
+    setOpenSnackbar(false);
+  }
+
   async function handleClickRestPassword() {
     try {
       await sendPasswordResetEmail(auth, userMail);
-      navigate(loginRoute);
+      setOpenSnackbar(true);
+      setTimeout(() => navigate(loginRoute), 3000);
     } catch (error) {
       console.log(error);
     }
@@ -89,7 +97,6 @@ export function ForgotPasswordPage() {
 
           <Box display="flex" flexDirection="column" width="100%">
             <TextField
-              //error={isFormInvalid}
               type="email"
               label="E-Mail"
               variant="outlined"
@@ -112,6 +119,23 @@ export function ForgotPasswordPage() {
             >
               Passwort zurücksetzen
             </Button>
+            <Snackbar
+              anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+              open={openSnackbar}
+              autoHideDuration={1500}
+              onClose={handleCloseSnackbar}
+            >
+              <Alert
+                variant="outlined"
+                sx={{
+                  backgroundColor: "#fcecfc",
+                  borderColor: primaryColor,
+                }}
+                icon={<TaskAltIcon color="primary" />}
+              >
+                Mail wurde versand
+              </Alert>
+            </Snackbar>
           </Box>
         </Box>
       </Paper>
