@@ -6,6 +6,7 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import {
   Box,
   Button,
+  Card,
   Dialog,
   DialogContent,
   IconButton,
@@ -102,18 +103,20 @@ export function EditRecipePage(props: EditRecipeProps) {
   return (
     <Box
       display="flex"
-      width="100%"
-      height="100%"
+      //width="100%"
+      //height="100%"
       justifyContent="center"
       alignItems="center"
     >
-      <Paper
+      <Card
         style={{
-          width: "500px",
-          padding: "10px",
-          margin: "10px",
+          width: "300px",
+          paddingTop: "10px",
+          paddingLeft: "10px",
+          paddingRight: "10px",
+          marginBottom: "10px",
         }}
-        elevation={4}
+        //elevation={4}
       >
         <Box display="flex" flexDirection="column" width="100%" rowGap="20px">
           <input type="file" accept="image/*" onChange={handleOnChangeFile} />
@@ -191,7 +194,7 @@ export function EditRecipePage(props: EditRecipeProps) {
             </Box>
           </Dialog>
         </Box>
-      </Paper>
+      </Card>
     </Box>
   );
 }

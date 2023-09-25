@@ -47,6 +47,7 @@ export function RecipePage(props: RecipePageProps) {
           paddingTop: "10px",
           paddingLeft: "10px",
           paddingRight: "10px",
+          marginBottom: "10px",
         }}
       >
         <Box display="flex" flexDirection="column" rowGap="20px">

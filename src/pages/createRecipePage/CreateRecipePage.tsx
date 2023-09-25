@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { TextField, Box, Paper, IconButton } from "@mui/material";
+import { TextField, Box, Paper, IconButton, Card } from "@mui/material";
 import { Close } from "@mui/icons-material";
 import CheckIcon from "@mui/icons-material/Check";
 import { doc, setDoc } from "firebase/firestore";
@@ -80,20 +80,23 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
   return (
     <Box
       display="flex"
-      width="100%"
-      height="100%"
+      //width="100%"
+      //height="100%"
       justifyContent="center"
       alignItems="center"
     >
-      <Paper
+      <Card
         style={{
-          width: "500px",
-          padding: "10px",
-          margin: "10px",
+          width: "300px",
+          paddingTop: "10px",
+          paddingLeft: "10px",
+          paddingRight: "10px",
+          marginTop: "10px",
+          marginBottom: "10px",
         }}
-        elevation={4}
+        //elevation={4}
       >
-        <Box display="flex" flexDirection="column" width="100%" rowGap="20px">
+        <Box display="flex" flexDirection="column" width="100%" rowGap="10px">
           <Box display="flex" width="100%" justifyContent="right">
             <IconButton color="primary" onClick={handleClickCloseCreateRecipe}>
               <Close />
@@ -147,7 +150,7 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
             <CheckIcon />
           </IconButton>
         </Box>
-      </Paper>
+      </Card>
     </Box>
   );
 }
