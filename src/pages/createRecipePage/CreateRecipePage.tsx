@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { TextField, Box, Paper, IconButton, Card } from "@mui/material";
+import { TextField, Box, IconButton, Card } from "@mui/material";
 import { Close } from "@mui/icons-material";
 import CheckIcon from "@mui/icons-material/Check";
 import { doc, setDoc } from "firebase/firestore";

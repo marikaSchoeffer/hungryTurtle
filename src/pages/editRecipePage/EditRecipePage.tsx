@@ -10,7 +10,6 @@ import {
   Dialog,
   DialogContent,
   IconButton,
-  Paper,
   TextField,
   Typography,
 } from "@mui/material";
