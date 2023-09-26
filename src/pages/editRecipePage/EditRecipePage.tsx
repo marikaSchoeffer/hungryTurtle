@@ -100,22 +100,16 @@ export function EditRecipePage(props: EditRecipeProps) {
   }
 
   return (
-    <Box
-      display="flex"
-      //width="100%"
-      //height="100%"
-      justifyContent="center"
-      alignItems="center"
-    >
+    <Box display="flex" justifyContent="center" alignItems="center">
       <Card
         style={{
           width: "300px",
           paddingTop: "10px",
           paddingLeft: "10px",
           paddingRight: "10px",
+          marginTop: "10px",
           marginBottom: "10px",
         }}
-        //elevation={4}
       >
         <Box display="flex" flexDirection="column" width="100%" rowGap="20px">
           <input type="file" accept="image/*" onChange={handleOnChangeFile} />

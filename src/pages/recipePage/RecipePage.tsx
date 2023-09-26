@@ -38,7 +38,6 @@ export function RecipePage(props: RecipePageProps) {
       flexDirection="column"
       justifyContent="center"
       alignItems="center"
-      paddingTop="20px"
       rowGap="20px"
     >
       <Card
@@ -47,6 +46,7 @@ export function RecipePage(props: RecipePageProps) {
           paddingTop: "10px",
           paddingLeft: "10px",
           paddingRight: "10px",
+          marginTop: "10px",
           marginBottom: "10px",
         }}
       >

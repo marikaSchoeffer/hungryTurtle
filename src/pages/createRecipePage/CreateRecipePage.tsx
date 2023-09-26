@@ -78,13 +78,7 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
   }
 
   return (
-    <Box
-      display="flex"
-      //width="100%"
-      //height="100%"
-      justifyContent="center"
-      alignItems="center"
-    >
+    <Box display="flex" justifyContent="center" alignItems="center">
       <Card
         style={{
           width: "300px",
@@ -94,7 +88,6 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
           marginTop: "10px",
           marginBottom: "10px",
         }}
-        //elevation={4}
       >
         <Box display="flex" flexDirection="column" width="100%" rowGap="10px">
           <Box display="flex" width="100%" justifyContent="right">
