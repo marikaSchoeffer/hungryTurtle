@@ -7,9 +7,13 @@ import {
   TextField,
   IconButton,
   Divider,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
 } from "@mui/material";
 import AppsIcon from "@mui/icons-material/Apps";
 import EditIcon from "@mui/icons-material/Edit";
+import { ExpandMore } from "@mui/icons-material";
 import { User } from "firebase/auth";
 
 import { primaryColor } from "../../style";
@@ -70,49 +74,69 @@ export function RecipePage(props: RecipePageProps) {
             alt={props.currentRecipe.title}
           />
 
-          <Typography variant="h6">
-            Dauer: {props.currentRecipe.duration} Minuten
-          </Typography>
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMore />}>
+              <Typography variant="h6">Dauer</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography>{props.currentRecipe.duration} Minuten</Typography>
+            </AccordionDetails>
+          </Accordion>
 
           <Box display="flex" flexDirection="column">
-            <Typography variant="h6">Zutaten:</Typography>
-
-            <TextField
-              multiline
-              InputProps={{
-                readOnly: true,
-                style: {
-                  paddingTop: "0px",
-                  paddingBottom: "5px",
-                },
-              }}
-              sx={{
-                border: "none",
-                "& fieldset": { border: "none" },
-              }}
-              value={props.currentRecipe.ingredients}
-            />
+            <Accordion>
+              <AccordionSummary expandIcon={<ExpandMore />}>
+                <Typography variant="h6">Zutaten</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <TextField
+                  multiline={true}
+                  minRows={1}
+                  maxRows={100}
+                  InputProps={{
+                    readOnly: true,
+                    style: {
+                      paddingTop: "0px",
+                      paddingBottom: "5px",
+                    },
+                  }}
+                  sx={{
+                    border: "none",
+                    "& fieldset": { border: "none" },
+                  }}
+                  value={props.currentRecipe.ingredients}
+                />
+              </AccordionDetails>
+            </Accordion>
           </Box>
 
           <Box display="flex" flexDirection="column">
-            <Typography variant="h6">Beschreibung:</Typography>
-            <TextField
-              multiline
-              InputProps={{
-                readOnly: true,
-                style: {
-                  paddingTop: "0px",
-                  paddingBottom: "5px",
-                },
-              }}
-              sx={{
-                border: "none",
-                "& fieldset": { border: "none" },
-              }}
-              value={props.currentRecipe.description}
-            />
-            <Divider color={primaryColor} />
+            <Accordion>
+              <AccordionSummary expandIcon={<ExpandMore />}>
+                <Typography variant="h6">Beschreibung</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <TextField
+                  multiline={true}
+                  minRows={1}
+                  maxRows={100}
+                  InputProps={{
+                    readOnly: true,
+                    style: {
+                      paddingTop: "0px",
+                      paddingBottom: "5px",
+                    },
+                  }}
+                  sx={{
+                    border: "none",
+                    "& fieldset": { border: "none" },
+                  }}
+                  value={props.currentRecipe.description}
+                />
+              </AccordionDetails>
+            </Accordion>
           </Box>
+          <Divider color={primaryColor} />
         </Box>
         <Box display="flex" justifyContent="center">
           <IconButton

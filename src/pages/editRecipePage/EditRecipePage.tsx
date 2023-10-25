@@ -4,6 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { doc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Box,
   Button,
   Card,
@@ -14,6 +17,7 @@ import {
   Typography,
 } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
+import { ExpandMore } from "@mui/icons-material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 import { db, storage } from "../../firebase";
@@ -130,20 +134,35 @@ export function EditRecipePage(props: EditRecipeProps) {
               setRecipeDuration(x.target.value.replace(/\D/g, ""))
             }
           />
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMore />}>
+              <Typography>Zutaten</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <TextField
+                multiline={true}
+                minRows={1}
+                maxRows={100}
+                value={recipeIngredients}
+                onChange={(x) => setRecipeIngredients(x.target.value)}
+              />
+            </AccordionDetails>
+          </Accordion>
 
-          <TextField
-            multiline
-            label="Zutaten"
-            value={recipeIngredients}
-            onChange={(x) => setRecipeIngredients(x.target.value)}
-          />
-
-          <TextField
-            multiline
-            label="Rezeptbschreibung"
-            value={recipeDescription}
-            onChange={(x) => setRecipeDescription(x.target.value)}
-          />
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMore />}>
+              <Typography>Beschreibung</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <TextField
+                multiline={true}
+                minRows={1}
+                maxRows={100}
+                value={recipeDescription}
+                onChange={(x) => setRecipeDescription(x.target.value)}
+              />
+            </AccordionDetails>
+          </Accordion>
         </Box>
 
         <Box display="flex" justifyContent="end">
