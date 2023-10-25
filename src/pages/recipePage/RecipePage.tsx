@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -26,6 +27,20 @@ type RecipePageProps = {
 };
 
 export function RecipePage(props: RecipePageProps) {
+  const [recipeTitle, setRecipeTitle] = useState("");
+  const [recipeDuration, setRecipeDuration] = useState("");
+  const [recipeIngredients, setRecipeIngredients] = useState("");
+  const [recipeDescription, setRecipeDescription] = useState("");
+
+  useEffect(() => {
+    if (props.currentRecipe) {
+      setRecipeTitle(props.currentRecipe.title);
+      setRecipeDuration(props.currentRecipe.duration.toString());
+      setRecipeIngredients(props.currentRecipe.ingredients);
+      setRecipeDescription(props.currentRecipe.description);
+    }
+  }, [props.currentRecipe]);
+
   const navigate = useNavigate();
 
   function handleClickEditRecipe() {
@@ -62,7 +77,7 @@ export function RecipePage(props: RecipePageProps) {
               fontWeight: "bold",
             }}
           >
-            {props.currentRecipe.title}
+            {recipeTitle}
           </Typography>
 
           <img
@@ -79,7 +94,7 @@ export function RecipePage(props: RecipePageProps) {
               <Typography variant="h6">Dauer</Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <Typography>{props.currentRecipe.duration} Minuten</Typography>
+              <Typography>{recipeDuration} Minuten</Typography>
             </AccordionDetails>
           </Accordion>
 
@@ -90,9 +105,8 @@ export function RecipePage(props: RecipePageProps) {
               </AccordionSummary>
               <AccordionDetails>
                 <TextField
-                  multiline={true}
-                  minRows={1}
-                  maxRows={100}
+                  multiline
+                  fullWidth
                   InputProps={{
                     readOnly: true,
                     style: {
@@ -104,7 +118,7 @@ export function RecipePage(props: RecipePageProps) {
                     border: "none",
                     "& fieldset": { border: "none" },
                   }}
-                  value={props.currentRecipe.ingredients}
+                  value={recipeIngredients}
                 />
               </AccordionDetails>
             </Accordion>
@@ -117,9 +131,8 @@ export function RecipePage(props: RecipePageProps) {
               </AccordionSummary>
               <AccordionDetails>
                 <TextField
-                  multiline={true}
-                  minRows={1}
-                  maxRows={100}
+                  multiline
+                  fullWidth
                   InputProps={{
                     readOnly: true,
                     style: {
@@ -131,7 +144,7 @@ export function RecipePage(props: RecipePageProps) {
                     border: "none",
                     "& fieldset": { border: "none" },
                   }}
-                  value={props.currentRecipe.description}
+                  value={recipeDescription}
                 />
               </AccordionDetails>
             </Accordion>

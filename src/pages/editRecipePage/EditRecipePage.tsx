@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { doc, updateDoc } from "firebase/firestore";
@@ -31,18 +31,21 @@ type EditRecipeProps = {
 };
 
 export function EditRecipePage(props: EditRecipeProps) {
-  const [recipeTitle, setRecipeTitle] = useState(props.currentRecipe.title);
-  const [recipeDuration, setRecipeDuration] = useState(
-    props.currentRecipe.duration.toString()
-  );
-  const [recipeIngredients, setRecipeIngredients] = useState(
-    props.currentRecipe.ingredients
-  );
-  const [recipeDescription, setRecipeDescription] = useState(
-    props.currentRecipe.description
-  );
+  const [recipeTitle, setRecipeTitle] = useState("");
+  const [recipeDuration, setRecipeDuration] = useState("");
+  const [recipeIngredients, setRecipeIngredients] = useState("");
+  const [recipeDescription, setRecipeDescription] = useState("");
   const [imageUpload, setImageUpload] = useState<File | null>(null);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+
+  useEffect(() => {
+    if (props.currentRecipe) {
+      setRecipeTitle(props.currentRecipe.title);
+      setRecipeDuration(props.currentRecipe.duration.toString());
+      setRecipeIngredients(props.currentRecipe.ingredients);
+      setRecipeDescription(props.currentRecipe.description);
+    }
+  }, [props.currentRecipe]);
 
   const navigate = useNavigate();
 
@@ -140,9 +143,8 @@ export function EditRecipePage(props: EditRecipeProps) {
             </AccordionSummary>
             <AccordionDetails>
               <TextField
-                multiline={true}
-                minRows={1}
-                maxRows={100}
+                multiline
+                fullWidth
                 value={recipeIngredients}
                 onChange={(x) => setRecipeIngredients(x.target.value)}
               />
@@ -155,9 +157,8 @@ export function EditRecipePage(props: EditRecipeProps) {
             </AccordionSummary>
             <AccordionDetails>
               <TextField
-                multiline={true}
-                minRows={1}
-                maxRows={100}
+                multiline
+                fullWidth
                 value={recipeDescription}
                 onChange={(x) => setRecipeDescription(x.target.value)}
               />
