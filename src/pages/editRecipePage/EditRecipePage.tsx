@@ -10,6 +10,7 @@ import {
   Box,
   Button,
   Card,
+  CircularProgress,
   Dialog,
   DialogContent,
   IconButton,
@@ -37,6 +38,7 @@ export function EditRecipePage(props: EditRecipeProps) {
   const [recipeDescription, setRecipeDescription] = useState("");
   const [imageUpload, setImageUpload] = useState<File | null>(null);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (props.currentRecipe) {
@@ -51,6 +53,7 @@ export function EditRecipePage(props: EditRecipeProps) {
 
   async function handleClickEditRecipe() {
     let urlLink = "";
+    setIsLoading(true);
 
     if (imageUpload !== null) {
       const imageRefName = createGuid();
@@ -80,6 +83,7 @@ export function EditRecipePage(props: EditRecipeProps) {
 
     props.setCurrentRecipe(recipeObj);
     setImageUpload(null);
+    setIsLoading(false);
     navigate(recipeRoute);
   }
 
@@ -166,8 +170,21 @@ export function EditRecipePage(props: EditRecipeProps) {
           </Accordion>
         </Box>
 
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          marginTop="10px"
+        >
+          {isLoading ? <CircularProgress color="primary" /> : null}
+        </Box>
+
         <Box display="flex" justifyContent="end">
-          <IconButton color="primary" onClick={handelClickOpenDeleteDialog}>
+          <IconButton
+            color="primary"
+            onClick={handelClickOpenDeleteDialog}
+            disabled={isLoading}
+          >
             <DeleteIcon />
           </IconButton>
 
@@ -178,7 +195,8 @@ export function EditRecipePage(props: EditRecipeProps) {
               recipeTitle === "" ||
               recipeDuration === "" ||
               recipeIngredients === "" ||
-              recipeDescription === ""
+              recipeDescription === "" ||
+              isLoading
             }
           >
             <CheckIcon />
