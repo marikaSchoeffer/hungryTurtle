@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -7,9 +8,13 @@ import {
   TextField,
   IconButton,
   Divider,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
 } from "@mui/material";
 import AppsIcon from "@mui/icons-material/Apps";
 import EditIcon from "@mui/icons-material/Edit";
+import { ExpandMore } from "@mui/icons-material";
 import { User } from "firebase/auth";
 
 import { primaryColor } from "../../style";
@@ -22,6 +27,20 @@ type RecipePageProps = {
 };
 
 export function RecipePage(props: RecipePageProps) {
+  const [recipeTitle, setRecipeTitle] = useState("");
+  const [recipeDuration, setRecipeDuration] = useState("");
+  const [recipeIngredients, setRecipeIngredients] = useState("");
+  const [recipeDescription, setRecipeDescription] = useState("");
+
+  useEffect(() => {
+    if (props.currentRecipe) {
+      setRecipeTitle(props.currentRecipe.title);
+      setRecipeDuration(props.currentRecipe.duration.toString());
+      setRecipeIngredients(props.currentRecipe.ingredients);
+      setRecipeDescription(props.currentRecipe.description);
+    }
+  }, [props.currentRecipe]);
+
   const navigate = useNavigate();
 
   function handleClickEditRecipe() {
@@ -58,7 +77,7 @@ export function RecipePage(props: RecipePageProps) {
               fontWeight: "bold",
             }}
           >
-            {props.currentRecipe.title}
+            {recipeTitle}
           </Typography>
 
           <img
@@ -70,49 +89,67 @@ export function RecipePage(props: RecipePageProps) {
             alt={props.currentRecipe.title}
           />
 
-          <Typography variant="h6">
-            Dauer: {props.currentRecipe.duration} Minuten
-          </Typography>
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMore />}>
+              <Typography variant="h6">Dauer</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography>{recipeDuration} Minuten</Typography>
+            </AccordionDetails>
+          </Accordion>
 
           <Box display="flex" flexDirection="column">
-            <Typography variant="h6">Zutaten:</Typography>
-
-            <TextField
-              multiline
-              InputProps={{
-                readOnly: true,
-                style: {
-                  paddingTop: "0px",
-                  paddingBottom: "5px",
-                },
-              }}
-              sx={{
-                border: "none",
-                "& fieldset": { border: "none" },
-              }}
-              value={props.currentRecipe.ingredients}
-            />
+            <Accordion>
+              <AccordionSummary expandIcon={<ExpandMore />}>
+                <Typography variant="h6">Zutaten</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <TextField
+                  multiline
+                  fullWidth
+                  InputProps={{
+                    readOnly: true,
+                    style: {
+                      paddingTop: "0px",
+                      paddingBottom: "5px",
+                    },
+                  }}
+                  sx={{
+                    border: "none",
+                    "& fieldset": { border: "none" },
+                  }}
+                  value={recipeIngredients}
+                />
+              </AccordionDetails>
+            </Accordion>
           </Box>
 
           <Box display="flex" flexDirection="column">
-            <Typography variant="h6">Beschreibung:</Typography>
-            <TextField
-              multiline
-              InputProps={{
-                readOnly: true,
-                style: {
-                  paddingTop: "0px",
-                  paddingBottom: "5px",
-                },
-              }}
-              sx={{
-                border: "none",
-                "& fieldset": { border: "none" },
-              }}
-              value={props.currentRecipe.description}
-            />
-            <Divider color={primaryColor} />
+            <Accordion>
+              <AccordionSummary expandIcon={<ExpandMore />}>
+                <Typography variant="h6">Beschreibung</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <TextField
+                  multiline
+                  fullWidth
+                  InputProps={{
+                    readOnly: true,
+                    style: {
+                      paddingTop: "0px",
+                      paddingBottom: "5px",
+                    },
+                  }}
+                  sx={{
+                    border: "none",
+                    "& fieldset": { border: "none" },
+                  }}
+                  value={recipeDescription}
+                />
+              </AccordionDetails>
+            </Accordion>
           </Box>
+          <Divider color={primaryColor} />
         </Box>
         <Box display="flex" justifyContent="center">
           <IconButton

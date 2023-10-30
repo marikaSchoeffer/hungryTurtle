@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { doc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Box,
   Button,
   Card,
@@ -14,6 +17,7 @@ import {
   Typography,
 } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
+import { ExpandMore } from "@mui/icons-material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 import { db, storage } from "../../firebase";
@@ -27,18 +31,21 @@ type EditRecipeProps = {
 };
 
 export function EditRecipePage(props: EditRecipeProps) {
-  const [recipeTitle, setRecipeTitle] = useState(props.currentRecipe.title);
-  const [recipeDuration, setRecipeDuration] = useState(
-    props.currentRecipe.duration.toString()
-  );
-  const [recipeIngredients, setRecipeIngredients] = useState(
-    props.currentRecipe.ingredients
-  );
-  const [recipeDescription, setRecipeDescription] = useState(
-    props.currentRecipe.description
-  );
+  const [recipeTitle, setRecipeTitle] = useState("");
+  const [recipeDuration, setRecipeDuration] = useState("");
+  const [recipeIngredients, setRecipeIngredients] = useState("");
+  const [recipeDescription, setRecipeDescription] = useState("");
   const [imageUpload, setImageUpload] = useState<File | null>(null);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+
+  useEffect(() => {
+    if (props.currentRecipe) {
+      setRecipeTitle(props.currentRecipe.title);
+      setRecipeDuration(props.currentRecipe.duration.toString());
+      setRecipeIngredients(props.currentRecipe.ingredients);
+      setRecipeDescription(props.currentRecipe.description);
+    }
+  }, [props.currentRecipe]);
 
   const navigate = useNavigate();
 
@@ -130,20 +137,33 @@ export function EditRecipePage(props: EditRecipeProps) {
               setRecipeDuration(x.target.value.replace(/\D/g, ""))
             }
           />
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMore />}>
+              <Typography>Zutaten</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <TextField
+                multiline
+                fullWidth
+                value={recipeIngredients}
+                onChange={(x) => setRecipeIngredients(x.target.value)}
+              />
+            </AccordionDetails>
+          </Accordion>
 
-          <TextField
-            multiline
-            label="Zutaten"
-            value={recipeIngredients}
-            onChange={(x) => setRecipeIngredients(x.target.value)}
-          />
-
-          <TextField
-            multiline
-            label="Rezeptbschreibung"
-            value={recipeDescription}
-            onChange={(x) => setRecipeDescription(x.target.value)}
-          />
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMore />}>
+              <Typography>Beschreibung</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <TextField
+                multiline
+                fullWidth
+                value={recipeDescription}
+                onChange={(x) => setRecipeDescription(x.target.value)}
+              />
+            </AccordionDetails>
+          </Accordion>
         </Box>
 
         <Box display="flex" justifyContent="end">
