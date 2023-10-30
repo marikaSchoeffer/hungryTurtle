@@ -1,7 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { TextField, Box, IconButton, Card } from "@mui/material";
+import {
+  TextField,
+  Box,
+  IconButton,
+  Card,
+  CircularProgress,
+} from "@mui/material";
 import { Close } from "@mui/icons-material";
 import CheckIcon from "@mui/icons-material/Check";
 import { doc, setDoc } from "firebase/firestore";
@@ -23,11 +29,13 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
   const [recipeIngredients, setRecipeIngredients] = useState("");
   const [recipeDescription, setRecipeDescription] = useState("");
   const [imageUpload, setImageUpload] = useState<File | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
   async function handleClickCreateRecipe() {
     let urlLink = "";
+    setIsLoading(true);
 
     if (imageUpload !== null) {
       const imageRefName = createGuid();
@@ -61,6 +69,7 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
     setRecipeIngredients("");
     setRecipeDescription("");
     setImageUpload(null);
+    setIsLoading(false);
 
     navigate(overviewRoute);
   }
@@ -91,10 +100,15 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
       >
         <Box display="flex" flexDirection="column" width="100%" rowGap="10px">
           <Box display="flex" width="100%" justifyContent="right">
-            <IconButton color="primary" onClick={handleClickCloseCreateRecipe}>
+            <IconButton
+              color="primary"
+              onClick={handleClickCloseCreateRecipe}
+              disabled={isLoading}
+            >
               <Close />
             </IconButton>
           </Box>
+
           <input type="file" accept="image/*" onChange={handleOnChangeFile} />
           <TextField
             variant="outlined"
@@ -129,6 +143,15 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
           />
         </Box>
 
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          marginTop="10px"
+        >
+          {isLoading ? <CircularProgress color="primary" /> : null}
+        </Box>
+
         <Box display="flex" justifyContent="end">
           <IconButton
             color="primary"
@@ -137,7 +160,8 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
               recipeTitle === "" ||
               recipeDuration === "" ||
               recipeIngredients === "" ||
-              recipeDescription === ""
+              recipeDescription === "" ||
+              isLoading
             }
           >
             <CheckIcon />
