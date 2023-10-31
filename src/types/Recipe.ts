@@ -7,4 +7,5 @@ export type Recipe = {
   deleted: boolean;
   imageURL: string;
   userId: string;
+  categories: string[];
 };
