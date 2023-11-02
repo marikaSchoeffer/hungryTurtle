@@ -42,7 +42,7 @@ export function OverviewPage(props: OverviewPageProps) {
           deleted: doc.data().deleted,
           imageURL: doc.data().imageURL,
           userId: doc.data().userId,
-          filterCategories: doc.data().filterCategories,
+          categories: doc.data().recipeCategories,
         };
         recipes.push(recipe);
         setPagination({ ...pagination, count: recipes.length });

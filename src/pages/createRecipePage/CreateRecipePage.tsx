@@ -38,16 +38,18 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
   const [recipeIngredients, setRecipeIngredients] = useState("");
   const [recipeDescription, setRecipeDescription] = useState("");
   const [imageUpload, setImageUpload] = useState<File | null>(null);
-  const [recipeCategories, setRecipeCategories] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [checked, setChecked] = useState<boolean[]>(
     new Array(categories.length).fill(false)
   );
 
   const navigate = useNavigate();
+  let found: boolean | undefined = checked.find((element) => element === true);
 
   async function handleClickCreateRecipe() {
     let urlLink = "";
+    let recipeCategories: string[] = [];
+
     setIsLoading(true);
 
     if (imageUpload !== null) {
@@ -59,6 +61,12 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
         urlLink = await getDownloadURL(ref(storage, imageRefName));
       } catch (error) {
         console.log(error);
+      }
+    }
+
+    for (let i = 0; i < checked.length; i++) {
+      if (checked[i] === true) {
+        recipeCategories.push(categories[i]);
       }
     }
 
@@ -83,7 +91,6 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
     setRecipeIngredients("");
     setRecipeDescription("");
     setImageUpload(null);
-    setRecipeCategories([]);
     setIsLoading(false);
 
     navigate(overviewRoute);
@@ -101,26 +108,11 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
     }
   }
 
-  function handleToggle(value: string, position: number) {
-    //let cloneFilterCategories: string[] = structuredClone(recipeCategories);
-    //cloneFilterCategories.push(value);
-    //setRecipeCategories(cloneFilterCategories);
-
+  function handleToggle(position: number) {
     const updatedChecked = checked.map((element, index) =>
       index === position ? !element : element
     );
     setChecked(updatedChecked);
-
-    let cloneFilterCategories: string[] = structuredClone(recipeCategories);
-
-    if (updatedChecked[position] === true) {
-      cloneFilterCategories.push(value);
-    } else {
-      cloneFilterCategories = cloneFilterCategories.filter(
-        (word) => word !== value
-      );
-    }
-    setRecipeCategories(cloneFilterCategories);
   }
 
   return (
@@ -204,7 +196,7 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
                     secondaryAction={
                       <Checkbox
                         edge="end"
-                        onChange={() => handleToggle(value, index)}
+                        onChange={() => handleToggle(index)}
                         checked={checked[index]}
                       />
                     }
@@ -236,7 +228,7 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
               recipeDuration === "" ||
               recipeIngredients === "" ||
               recipeDescription === "" ||
-              recipeCategories.length === 0 ||
+              found === undefined ||
               isLoading
             }
           >

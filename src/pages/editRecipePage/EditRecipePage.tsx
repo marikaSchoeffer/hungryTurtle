@@ -37,7 +37,6 @@ export function EditRecipePage(props: EditRecipeProps) {
   const [recipeIngredients, setRecipeIngredients] = useState("");
   const [recipeDescription, setRecipeDescription] = useState("");
   const [imageUpload, setImageUpload] = useState<File | null>(null);
-  const [recipeCategories, setRecipeCategories] = useState([]);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -47,7 +46,6 @@ export function EditRecipePage(props: EditRecipeProps) {
       setRecipeDuration(props.currentRecipe.duration.toString());
       setRecipeIngredients(props.currentRecipe.ingredients);
       setRecipeDescription(props.currentRecipe.description);
-      //setRecipeFilterCategories(props.currentRecipe.filterCategories);
     }
   }, [props.currentRecipe]);
 
@@ -55,6 +53,8 @@ export function EditRecipePage(props: EditRecipeProps) {
 
   async function handleClickEditRecipe() {
     let urlLink = "";
+    let recipeCategories: string[] = [];
+
     setIsLoading(true);
 
     if (imageUpload !== null) {
