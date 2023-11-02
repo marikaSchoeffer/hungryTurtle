@@ -1,10 +1,17 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-import { Box, Chip, Pagination, Paper } from "@mui/material";
+import { Box, /*Button,*/ Chip, Pagination, Paper } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import {
+  collection,
+  //doc,
+  getDocs,
+  query,
+  //updateDoc,
+  where,
+} from "firebase/firestore";
 
 import { RecipePreview } from "./RecipePreview";
 import { Recipe } from "../../types/Recipe";
@@ -42,7 +49,7 @@ export function OverviewPage(props: OverviewPageProps) {
           deleted: doc.data().deleted,
           imageURL: doc.data().imageURL,
           userId: doc.data().userId,
-          categories: doc.data().recipeCategories,
+          categories: doc.data().categories,
         };
         recipes.push(recipe);
         setPagination({ ...pagination, count: recipes.length });
@@ -68,6 +75,33 @@ export function OverviewPage(props: OverviewPageProps) {
 
     setPagination({ ...pagination, from: from, to: to });
   }
+
+  /*async function handleClickMigration() {
+    const q = query(collection(db, "recipes"));
+    const result = await getDocs(q);
+    let recipes: Recipe[] = [];
+
+    result.forEach((doc) => {
+      let recipe: Recipe = {
+        id: doc.data().id,
+        title: doc.data().title,
+        duration: doc.data().duration,
+        ingredients: doc.data().ingredients,
+        description: doc.data().description,
+        deleted: doc.data().deleted,
+        imageURL: doc.data().imageURL,
+        userId: doc.data().userId,
+        categories: doc.data().categories,
+      };
+      recipes.push(recipe);
+    });
+
+    for(let i = 0; i < recipes.length; i++) {
+      await updateDoc(doc(db, "recipes", recipes[i].id), {
+        categories: [],
+      });
+    }
+  }*/
 
   return (
     <Box
@@ -136,6 +170,13 @@ export function OverviewPage(props: OverviewPageProps) {
                 );
               })}
           </Box>
+          {/*
+          <Box display="flex" justifyContent="center" alignItems="center">
+            <Button variant="contained" onClick={handleClickMigration}>
+              Migration
+            </Button>
+          </Box>
+            */}
           <Box
             display="flex"
             justifyContent="center"
