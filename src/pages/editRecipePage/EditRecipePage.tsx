@@ -14,6 +14,10 @@ import {
   Dialog,
   DialogContent,
   IconButton,
+  List,
+  ListItem,
+  Checkbox,
+  ListItemText,
   TextField,
   Typography,
 } from "@mui/material";
@@ -25,6 +29,7 @@ import { db, storage } from "../../firebase";
 import { Recipe } from "../../types/Recipe";
 import { overviewRoute, recipeRoute } from "../routes";
 import { createGuid } from "../../lib/createGuid";
+import { categories } from "../../types/Categories";
 
 type EditRecipeProps = {
   currentRecipe: Recipe;
@@ -39,6 +44,9 @@ export function EditRecipePage(props: EditRecipeProps) {
   const [imageUpload, setImageUpload] = useState<File | null>(null);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [checked, setChecked] = useState<boolean[]>(
+    new Array(categories.length).fill(false)
+  );
 
   useEffect(() => {
     if (props.currentRecipe) {
@@ -46,10 +54,12 @@ export function EditRecipePage(props: EditRecipeProps) {
       setRecipeDuration(props.currentRecipe.duration.toString());
       setRecipeIngredients(props.currentRecipe.ingredients);
       setRecipeDescription(props.currentRecipe.description);
+      setCheckedState();
     }
   }, [props.currentRecipe]);
 
   const navigate = useNavigate();
+  let found: boolean | undefined = checked.find((element) => element === true);
 
   async function handleClickEditRecipe() {
     let urlLink = "";
@@ -66,6 +76,12 @@ export function EditRecipePage(props: EditRecipeProps) {
         urlLink = await getDownloadURL(ref(storage, imageRefName));
       } catch (error) {
         console.log(error);
+      }
+    }
+
+    for (let i = 0; i < checked.length; i++) {
+      if (checked[i] === true) {
+        recipeCategories.push(categories[i]);
       }
     }
 
@@ -111,6 +127,31 @@ export function EditRecipePage(props: EditRecipeProps) {
       let file = event.target.files[0];
       setImageUpload(file);
     }
+  }
+
+  function handleToggle(position: number) {
+    const updatedChecked = checked.map((element, index) =>
+      index === position ? !element : element
+    );
+    setChecked(updatedChecked);
+  }
+
+  function setCheckedState() {
+    let updatedChecked = new Array(categories.length).fill(false);
+
+    /*for (let i = 0; i < props.currentRecipe.categories.length; i++) {
+      for (let j = 0; j < categories.length; j++) {
+        if (props.currentRecipe.categories[i] === categories[j]) {
+          updatedChecked[j] = true;
+        }
+      }
+    }*/
+    for (let i = 0; i < categories.length; i++) {
+      if (props.currentRecipe.categories.includes(categories[i])) {
+        updatedChecked[i] = true;
+      }
+    }
+    setChecked(updatedChecked);
   }
 
   return (
@@ -171,6 +212,30 @@ export function EditRecipePage(props: EditRecipeProps) {
               />
             </AccordionDetails>
           </Accordion>
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMore />}>
+              <Typography>Kategorien</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <List>
+                {categories.map((value, index) => (
+                  <ListItem
+                    key={index}
+                    secondaryAction={
+                      <Checkbox
+                        edge="end"
+                        onChange={() => handleToggle(index)}
+                        checked={checked[index]}
+                      />
+                    }
+                    disablePadding
+                  >
+                    <ListItemText>{value}</ListItemText>
+                  </ListItem>
+                ))}
+              </List>
+            </AccordionDetails>
+          </Accordion>
         </Box>
 
         <Box
@@ -199,6 +264,7 @@ export function EditRecipePage(props: EditRecipeProps) {
               recipeDuration === "" ||
               recipeIngredients === "" ||
               recipeDescription === "" ||
+              found === undefined ||
               isLoading
             }
           >

@@ -11,6 +11,7 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
+  Chip,
 } from "@mui/material";
 import AppsIcon from "@mui/icons-material/Apps";
 import EditIcon from "@mui/icons-material/Edit";
@@ -149,6 +150,33 @@ export function RecipePage(props: RecipePageProps) {
               </AccordionDetails>
             </Accordion>
           </Box>
+
+          <Box display="flex" flexDirection="column">
+            <Accordion>
+              <AccordionSummary expandIcon={<ExpandMore />}>
+                <Typography variant="h6">Kategorien</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Box
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  flexDirection="column"
+                  rowGap="5px"
+                >
+                  {props.currentRecipe.categories.map((value, index) => (
+                    <Chip
+                      key={index}
+                      label={value}
+                      color="primary"
+                      variant="outlined"
+                    />
+                  ))}
+                </Box>
+              </AccordionDetails>
+            </Accordion>
+          </Box>
+
           <Divider color={primaryColor} />
         </Box>
         <Box display="flex" justifyContent="center">
