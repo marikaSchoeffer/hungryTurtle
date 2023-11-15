@@ -161,8 +161,10 @@ export function RecipePage(props: RecipePageProps) {
                   display="flex"
                   justifyContent="center"
                   alignItems="center"
-                  flexDirection="column"
+                  flexDirection="row"
+                  columnGap="5px"
                   rowGap="5px"
+                  flexWrap="wrap"
                 >
                   {props.currentRecipe.categories.map((value, index) => (
                     <Chip
