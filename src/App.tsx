@@ -53,6 +53,7 @@ export function App() {
                 setRecipes={setRecipes}
                 currentRecipe={currentRecipe}
                 setCurrentRecipe={setCurrentRecipe}
+                user={user}
               />
             }
           />

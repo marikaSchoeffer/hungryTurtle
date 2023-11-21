@@ -44,7 +44,9 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
   );
 
   const navigate = useNavigate();
-  let found: boolean | undefined = checked.find((element) => element === true);
+  let areCategoriesSelected: boolean | undefined = checked.find(
+    (element) => element === true
+  );
 
   async function handleClickCreateRecipe() {
     let urlLink = "";
@@ -109,7 +111,7 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
     }
   }
 
-  function handleToggle(position: number) {
+  function handleSelectCategories(position: number) {
     const updatedChecked = checked.map((element, index) =>
       index === position ? !element : element
     );
@@ -197,7 +199,7 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
                     secondaryAction={
                       <Checkbox
                         edge="end"
-                        onChange={() => handleToggle(index)}
+                        onChange={() => handleSelectCategories(index)}
                         checked={checked[index]}
                       />
                     }
@@ -229,7 +231,7 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
               recipeDuration === "" ||
               recipeIngredients === "" ||
               recipeDescription === "" ||
-              found === undefined ||
+              areCategoriesSelected === undefined ||
               isLoading
             }
           >

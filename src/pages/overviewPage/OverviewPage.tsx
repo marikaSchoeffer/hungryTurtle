@@ -1,19 +1,15 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-import { Box, /*Button,*/ Chip, Pagination, Paper } from "@mui/material";
+import { Box, Chip, Pagination, Paper } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { Category } from "@mui/icons-material";
 
-import {
-  collection,
-  //doc,
-  getDocs,
-  query,
-  //updateDoc,
-  where,
-} from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { User } from "firebase/auth";
 
 import { RecipePreview } from "./RecipePreview";
 import { Recipe } from "../../types/Recipe";
@@ -22,12 +18,14 @@ import { db } from "../../firebase";
 import { pageSize } from "../../style";
 import { categories } from "../../types/Categories";
 import { fetchAllRecipes } from "../../lib/fetchAllRecipes";
+//import { MigrationPage } from "./MigrationPage";
 
 type OverviewPageProps = {
   recipes: Recipe[];
   setRecipes: (recipe: Recipe[]) => void;
   currentRecipe: Recipe | null;
   setCurrentRecipe: (currentRecipe: Recipe) => void;
+  user: User | null;
 };
 
 export function OverviewPage(props: OverviewPageProps) {
@@ -40,6 +38,7 @@ export function OverviewPage(props: OverviewPageProps) {
     new Array(categories.length).fill(false)
   );
   const [areCategoriesVisible, setAreCategoriesVisible] = useState(false);
+  const [isFavActive, setIsFavActive] = useState(false);
 
   useEffect(() => {
     fetchAllRecipes(pagination, setPagination, props.setRecipes);
@@ -64,6 +63,11 @@ export function OverviewPage(props: OverviewPageProps) {
 
   function showFilterOptions() {
     setAreCategoriesVisible(areCategoriesVisible ? false : true);
+
+    if (isFavActive === true) {
+      setIsFavActive(false);
+      fetchAllRecipes(pagination, setPagination, props.setRecipes);
+    }
   }
 
   async function handleClickFilter(filter: string, index: number) {
@@ -71,6 +75,8 @@ export function OverviewPage(props: OverviewPageProps) {
       setFilterActive(
         filterActive.map((value, _index) => (_index === index ? !value : false))
       );
+
+      setIsFavActive(false);
 
       const q = query(
         collection(db, "recipes"),
@@ -105,33 +111,41 @@ export function OverviewPage(props: OverviewPageProps) {
     }
   }
 
-  /*async function handleClickMigration() {
-    const q = query(collection(db, "recipes"));
-    const result = await getDocs(q);
-    let recipes: Recipe[] = [];
+  async function handleClickFilterFav() {
+    const switchCategoriesOff = new Array(categories.length).fill(false);
+    setFilterActive(switchCategoriesOff);
 
-    result.forEach((doc) => {
-      let recipe: Recipe = {
-        id: doc.data().id,
-        title: doc.data().title,
-        duration: doc.data().duration,
-        ingredients: doc.data().ingredients,
-        description: doc.data().description,
-        deleted: doc.data().deleted,
-        imageURL: doc.data().imageURL,
-        userId: doc.data().userId,
-        categories: doc.data().categories,
-        favorite: doc.data().favorite,
-      };
-      recipes.push(recipe);
-    });
+    if (isFavActive === false) {
+      const q = query(
+        collection(db, "recipes"),
+        where("favorite", "array-contains", props.user!.uid!)
+      );
+      const result = await getDocs(q);
 
-    for (let i = 0; i < recipes.length; i++) {
-      await updateDoc(doc(db, "recipes", recipes[i].id), {
-        favorite: [],
+      let recipes: Recipe[] = [];
+      result.forEach((doc) => {
+        let recipe: Recipe = {
+          id: doc.data().id,
+          title: doc.data().title,
+          duration: doc.data().duration,
+          ingredients: doc.data().ingredients,
+          description: doc.data().description,
+          deleted: doc.data().deleted,
+          imageURL: doc.data().imageURL,
+          userId: doc.data().userId,
+          categories: doc.data().categories,
+          favorite: doc.data().favorite,
+        };
+        recipes.push(recipe);
+        setPagination({ ...pagination, count: recipes.length });
       });
+      props.setRecipes(recipes);
+      setIsFavActive(true);
+    } else {
+      fetchAllRecipes(pagination, setPagination, props.setRecipes);
+      setIsFavActive(false);
     }
-  }*/
+  }
 
   return (
     <Box
@@ -188,6 +202,14 @@ export function OverviewPage(props: OverviewPageProps) {
             />
 
             <Chip
+              icon={isFavActive ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+              label="Favoriten"
+              color="primary"
+              variant="outlined"
+              onClick={handleClickFilterFav}
+            />
+
+            <Chip
               icon={<Category />}
               label="Kategorien"
               color="primary"
@@ -227,13 +249,7 @@ export function OverviewPage(props: OverviewPageProps) {
                 );
               })}
           </Box>
-          {/*
-          <Box display="flex" justifyContent="center" alignItems="center">
-            <Button variant="contained" onClick={handleClickMigration}>
-              Migration
-            </Button>
-          </Box>
-          */}
+          {/*<MigrationPage />*/}
           <Box
             display="flex"
             justifyContent="center"
