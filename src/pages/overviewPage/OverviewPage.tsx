@@ -1,16 +1,27 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-import { Box, Chip, Pagination, Paper } from "@mui/material";
+import { Box, /*Button,*/ Chip, Pagination, Paper } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { Category } from "@mui/icons-material";
+
+import {
+  collection,
+  //doc,
+  getDocs,
+  query,
+  //updateDoc,
+  where,
+} from "firebase/firestore";
 
 import { RecipePreview } from "./RecipePreview";
 import { Recipe } from "../../types/Recipe";
 import { createRecipeRoute, profileRoute } from "../routes";
 import { db } from "../../firebase";
 import { pageSize } from "../../style";
+import { categories } from "../../types/Categories";
+import { fetchAllRecipes } from "../../lib/fetchAllRecipes";
 
 type OverviewPageProps = {
   recipes: Recipe[];
@@ -25,30 +36,13 @@ export function OverviewPage(props: OverviewPageProps) {
     from: 0,
     to: pageSize,
   });
+  const [filterActive, setFilterActive] = useState<boolean[]>(
+    new Array(categories.length).fill(false)
+  );
+  const [areCategoriesVisible, setAreCategoriesVisible] = useState(false);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const q = query(collection(db, "recipes"), where("deleted", "==", false));
-      const result = await getDocs(q);
-      let recipes: Recipe[] = [];
-
-      result.forEach((doc) => {
-        let recipe: Recipe = {
-          id: doc.data().id,
-          title: doc.data().title,
-          duration: doc.data().duration,
-          ingredients: doc.data().ingredients,
-          description: doc.data().description,
-          deleted: doc.data().deleted,
-          imageURL: doc.data().imageURL,
-          userId: doc.data().userId,
-        };
-        recipes.push(recipe);
-        setPagination({ ...pagination, count: recipes.length });
-      });
-      props.setRecipes(recipes);
-    };
-    fetchData();
+    fetchAllRecipes(pagination, setPagination, props.setRecipes);
   }, []);
 
   const navigate = useNavigate();
@@ -68,6 +62,75 @@ export function OverviewPage(props: OverviewPageProps) {
     setPagination({ ...pagination, from: from, to: to });
   }
 
+  function showFilterOptions() {
+    setAreCategoriesVisible(areCategoriesVisible ? false : true);
+  }
+
+  async function handleClickFilter(filter: string, index: number) {
+    if (filterActive[index] === false) {
+      setFilterActive(
+        filterActive.map((value, _index) => (_index === index ? !value : false))
+      );
+
+      const q = query(
+        collection(db, "recipes"),
+        where("categories", "array-contains", filter)
+      );
+      const result = await getDocs(q);
+
+      let recipes: Recipe[] = [];
+      result.forEach((doc) => {
+        let recipe: Recipe = {
+          id: doc.data().id,
+          title: doc.data().title,
+          duration: doc.data().duration,
+          ingredients: doc.data().ingredients,
+          description: doc.data().description,
+          deleted: doc.data().deleted,
+          imageURL: doc.data().imageURL,
+          userId: doc.data().userId,
+          categories: doc.data().categories,
+        };
+        recipes.push(recipe);
+        setPagination({ ...pagination, count: recipes.length });
+      });
+      props.setRecipes(recipes);
+    } else {
+      setFilterActive(
+        filterActive.map((value, _index) => (_index === index ? !value : value))
+      );
+
+      fetchAllRecipes(pagination, setPagination, props.setRecipes);
+    }
+  }
+
+  /*async function handleClickMigration() {
+    const q = query(collection(db, "recipes"));
+    const result = await getDocs(q);
+    let recipes: Recipe[] = [];
+
+    result.forEach((doc) => {
+      let recipe: Recipe = {
+        id: doc.data().id,
+        title: doc.data().title,
+        duration: doc.data().duration,
+        ingredients: doc.data().ingredients,
+        description: doc.data().description,
+        deleted: doc.data().deleted,
+        imageURL: doc.data().imageURL,
+        userId: doc.data().userId,
+        categories: doc.data().categories,
+      };
+      recipes.push(recipe);
+    });
+
+    for(let i = 0; i < recipes.length; i++) {
+      await updateDoc(doc(db, "recipes", recipes[i].id), {
+        categories: [],
+      });
+    }
+  }*/
+
   return (
     <Box
       display="flex"
@@ -77,23 +140,6 @@ export function OverviewPage(props: OverviewPageProps) {
       rowGap="10px"
       paddingTop="20px"
     >
-      <Box display="flex" justifyContent="space-evenly" gap="10px">
-        <Chip
-          icon={<AddCircleIcon />}
-          label="Rezept"
-          color="primary"
-          variant="outlined"
-          onClick={handleClickRecipeChip}
-        />
-        <Chip
-          icon={<AccountCircleIcon />}
-          label="Profil"
-          color="primary"
-          variant="outlined"
-          onClick={handleClickProfileChip}
-        />
-      </Box>
-
       <Box
         display="flex"
         justifyContent="center"
@@ -118,6 +164,50 @@ export function OverviewPage(props: OverviewPageProps) {
         >
           <Box
             display="flex"
+            flexWrap="wrap"
+            rowGap="5px"
+            columnGap="5px"
+            marginLeft="25px"
+            marginRight="25px"
+          >
+            <Chip
+              icon={<AddCircleIcon />}
+              label="Rezept"
+              color="primary"
+              variant="outlined"
+              onClick={handleClickRecipeChip}
+            />
+            <Chip
+              icon={<AccountCircleIcon />}
+              label="Profil"
+              color="primary"
+              variant="outlined"
+              onClick={handleClickProfileChip}
+            />
+
+            <Chip
+              icon={<Category />}
+              label="Kategorien"
+              color="primary"
+              variant="outlined"
+              onClick={showFilterOptions}
+            />
+
+            {areCategoriesVisible
+              ? categories.map((value, index) => (
+                  <Chip
+                    key={index}
+                    label={value}
+                    color="primary"
+                    variant={filterActive[index] ? "filled" : "outlined"}
+                    onClick={() => handleClickFilter(value, index)}
+                  />
+                ))
+              : null}
+          </Box>
+
+          <Box
+            display="flex"
             gap="25px"
             flexDirection="row"
             flexWrap="wrap"
@@ -135,6 +225,13 @@ export function OverviewPage(props: OverviewPageProps) {
                 );
               })}
           </Box>
+          {/*
+          <Box display="flex" justifyContent="center" alignItems="center">
+            <Button variant="contained" onClick={handleClickMigration}>
+              Migration
+            </Button>
+          </Box>
+            */}
           <Box
             display="flex"
             justifyContent="center"

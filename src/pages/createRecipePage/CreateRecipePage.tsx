@@ -7,8 +7,16 @@ import {
   IconButton,
   Card,
   CircularProgress,
+  List,
+  ListItem,
+  Checkbox,
+  ListItemText,
+  Accordion,
+  AccordionSummary,
+  Typography,
+  AccordionDetails,
 } from "@mui/material";
-import { Close } from "@mui/icons-material";
+import { Close, ExpandMore } from "@mui/icons-material";
 import CheckIcon from "@mui/icons-material/Check";
 import { doc, setDoc } from "firebase/firestore";
 import { User } from "firebase/auth";
@@ -18,6 +26,7 @@ import { Recipe } from "../../types/Recipe";
 import { overviewRoute } from "../routes";
 import { createGuid } from "../../lib/createGuid";
 import { db, storage } from "../../firebase";
+import { categories } from "../../types/Categories";
 
 type CreateRecipePageProps = {
   user: User | null;
@@ -30,11 +39,17 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
   const [recipeDescription, setRecipeDescription] = useState("");
   const [imageUpload, setImageUpload] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [checked, setChecked] = useState<boolean[]>(
+    new Array(categories.length).fill(false)
+  );
 
   const navigate = useNavigate();
+  let found: boolean | undefined = checked.find((element) => element === true);
 
   async function handleClickCreateRecipe() {
     let urlLink = "";
+    let recipeCategories: string[] = [];
+
     setIsLoading(true);
 
     if (imageUpload !== null) {
@@ -49,6 +64,12 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
       }
     }
 
+    for (let i = 0; i < checked.length; i++) {
+      if (checked[i] === true) {
+        recipeCategories.push(categories[i]);
+      }
+    }
+
     let id = createGuid();
 
     let recipeObj: Recipe = {
@@ -60,6 +81,7 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
       deleted: false,
       imageURL: urlLink,
       userId: props.user !== null ? props.user.uid : "",
+      categories: recipeCategories,
     };
 
     await setDoc(doc(db, "recipes", id), recipeObj); //Write recipe to database
@@ -84,6 +106,13 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
       let file = event.target.files[0];
       setImageUpload(file);
     }
+  }
+
+  function handleToggle(position: number) {
+    const updatedChecked = checked.map((element, index) =>
+      index === position ? !element : element
+    );
+    setChecked(updatedChecked);
   }
 
   return (
@@ -127,20 +156,58 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
               setRecipeDuration(x.target.value.replace(/\D/g, ""))
             }
           />
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMore />}>
+              <Typography>Zutaten</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <TextField
+                multiline
+                fullWidth
+                value={recipeIngredients}
+                onChange={(x) => setRecipeIngredients(x.target.value)}
+              />
+            </AccordionDetails>
+          </Accordion>
 
-          <TextField
-            multiline
-            label="Zutaten"
-            value={recipeIngredients}
-            onChange={(x) => setRecipeIngredients(x.target.value)}
-          />
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMore />}>
+              <Typography>Beschreibung</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <TextField
+                multiline
+                fullWidth
+                value={recipeDescription}
+                onChange={(x) => setRecipeDescription(x.target.value)}
+              />
+            </AccordionDetails>
+          </Accordion>
 
-          <TextField
-            multiline
-            label="Rezeptbschreibung"
-            value={recipeDescription}
-            onChange={(x) => setRecipeDescription(x.target.value)}
-          />
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMore />}>
+              <Typography>Kategorien</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <List>
+                {categories.map((value, index) => (
+                  <ListItem
+                    key={index}
+                    secondaryAction={
+                      <Checkbox
+                        edge="end"
+                        onChange={() => handleToggle(index)}
+                        checked={checked[index]}
+                      />
+                    }
+                    disablePadding
+                  >
+                    <ListItemText>{value}</ListItemText>
+                  </ListItem>
+                ))}
+              </List>
+            </AccordionDetails>
+          </Accordion>
         </Box>
 
         <Box
@@ -161,6 +228,7 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
               recipeDuration === "" ||
               recipeIngredients === "" ||
               recipeDescription === "" ||
+              found === undefined ||
               isLoading
             }
           >
