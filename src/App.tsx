@@ -31,6 +31,8 @@ let emptyRecipe: Recipe = {
   deleted: false,
   imageURL: "",
   userId: "",
+  categories: [],
+  favorite: [],
 };
 
 export function App() {
@@ -56,7 +58,13 @@ export function App() {
           />
           <Route
             path={recipeRoute}
-            element={<RecipePage currentRecipe={currentRecipe} user={user} />}
+            element={
+              <RecipePage
+                currentRecipe={currentRecipe}
+                setCurrentRecipe={setCurrentRecipe}
+                user={user}
+              />
+            }
           />
           <Route
             path={createRecipeRoute}

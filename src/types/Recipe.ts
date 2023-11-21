@@ -8,4 +8,5 @@ export type Recipe = {
   imageURL: string;
   userId: string;
   categories: string[];
+  favorite: string[];
 };

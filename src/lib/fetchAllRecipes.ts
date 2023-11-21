@@ -31,6 +31,7 @@ export async function fetchAllRecipes(
       imageURL: doc.data().imageURL,
       userId: doc.data().userId,
       categories: doc.data().categories,
+      favorite: doc.data().favorite,
     };
     recipes.push(recipe);
     setPagination({ ...pagination, count: recipes.length });

@@ -82,6 +82,7 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
       imageURL: urlLink,
       userId: props.user !== null ? props.user.uid : "",
       categories: recipeCategories,
+      favorite: [],
     };
 
     await setDoc(doc(db, "recipes", id), recipeObj); //Write recipe to database

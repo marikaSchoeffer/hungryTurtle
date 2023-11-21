@@ -15,15 +15,21 @@ import {
 } from "@mui/material";
 import AppsIcon from "@mui/icons-material/Apps";
 import EditIcon from "@mui/icons-material/Edit";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { ExpandMore } from "@mui/icons-material";
-import { User } from "firebase/auth";
 
+import { User } from "firebase/auth";
+import { doc, updateDoc } from "firebase/firestore";
+
+import { db } from "../../firebase";
 import { primaryColor } from "../../style";
 import { Recipe } from "../../types/Recipe";
 import { editRecipeRoute, overviewRoute } from "../routes";
 
 type RecipePageProps = {
   currentRecipe: Recipe;
+  setCurrentRecipe: (currentRecipe: Recipe) => void;
   user: User | null;
 };
 
@@ -50,6 +56,29 @@ export function RecipePage(props: RecipePageProps) {
 
   function handleClickBackToOverview() {
     navigate(overviewRoute);
+  }
+
+  async function handleClickFav() {
+    if (props.user === null || props.user.uid === undefined) {
+      return;
+    }
+
+    let updateRecipe = structuredClone(props.currentRecipe);
+    let updateArray = structuredClone(props.currentRecipe.favorite);
+
+    if (updateArray.includes(props.user.uid)) {
+      const index = updateArray.indexOf(props.user.uid);
+      updateArray.splice(index, 1);
+    } else {
+      updateArray.push(props.user.uid);
+    }
+
+    const updateTarget = doc(db, "recipes", props.currentRecipe.id);
+    await updateDoc(updateTarget, { favorite: updateArray });
+
+    updateRecipe.favorite = updateArray;
+
+    props.setCurrentRecipe(updateRecipe);
   }
 
   return (
@@ -192,6 +221,13 @@ export function RecipePage(props: RecipePageProps) {
 
           <IconButton color="primary" onClick={handleClickBackToOverview}>
             <AppsIcon />
+          </IconButton>
+          <IconButton color="primary" onClick={handleClickFav}>
+            {!props.currentRecipe.favorite.includes(props.user!.uid!) ? (
+              <FavoriteBorderIcon />
+            ) : (
+              <FavoriteIcon />
+            )}
           </IconButton>
         </Box>
       </Card>

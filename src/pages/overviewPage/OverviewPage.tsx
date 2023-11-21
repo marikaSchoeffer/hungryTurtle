@@ -90,6 +90,7 @@ export function OverviewPage(props: OverviewPageProps) {
           imageURL: doc.data().imageURL,
           userId: doc.data().userId,
           categories: doc.data().categories,
+          favorite: doc.data().favorite,
         };
         recipes.push(recipe);
         setPagination({ ...pagination, count: recipes.length });
@@ -120,13 +121,14 @@ export function OverviewPage(props: OverviewPageProps) {
         imageURL: doc.data().imageURL,
         userId: doc.data().userId,
         categories: doc.data().categories,
+        favorite: doc.data().favorite,
       };
       recipes.push(recipe);
     });
 
-    for(let i = 0; i < recipes.length; i++) {
+    for (let i = 0; i < recipes.length; i++) {
       await updateDoc(doc(db, "recipes", recipes[i].id), {
-        categories: [],
+        favorite: [],
       });
     }
   }*/
@@ -231,7 +233,7 @@ export function OverviewPage(props: OverviewPageProps) {
               Migration
             </Button>
           </Box>
-            */}
+          */}
           <Box
             display="flex"
             justifyContent="center"

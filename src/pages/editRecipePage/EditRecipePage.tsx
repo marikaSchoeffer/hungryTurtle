@@ -95,6 +95,7 @@ export function EditRecipePage(props: EditRecipeProps) {
       imageURL: imageUpload !== null ? urlLink : props.currentRecipe.imageURL,
       userId: props.currentRecipe.userId,
       categories: recipeCategories,
+      favorite: props.currentRecipe.favorite,
     };
 
     const updateTarget = doc(db, "recipes", props.currentRecipe.id);
