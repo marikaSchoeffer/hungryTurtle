@@ -27,6 +27,7 @@ import { overviewRoute } from "../routes";
 import { createGuid } from "../../lib/createGuid";
 import { db, storage } from "../../firebase";
 import { categories } from "../../types/Categories";
+import { Canvas } from "../canvasPage/Canvas";
 
 type CreateRecipePageProps = {
   user: User | null;
@@ -142,6 +143,11 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
           </Box>
 
           <input type="file" accept="image/*" onChange={handleOnChangeFile} />
+
+          {imageUpload !== null ? (
+            <Canvas width={300} height={400} imageUpload={imageUpload} />
+          ) : null}
+
           <TextField
             variant="outlined"
             label="Rezepttitel"
