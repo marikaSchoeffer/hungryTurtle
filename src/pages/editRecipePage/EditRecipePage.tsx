@@ -59,7 +59,9 @@ export function EditRecipePage(props: EditRecipeProps) {
   }, [props.currentRecipe]);
 
   const navigate = useNavigate();
-  let found: boolean | undefined = checked.find((element) => element === true);
+  let areCategoriesSelected: boolean | undefined = checked.find(
+    (element) => element === true
+  );
 
   async function handleClickEditRecipe() {
     let urlLink = "";
@@ -95,6 +97,7 @@ export function EditRecipePage(props: EditRecipeProps) {
       imageURL: imageUpload !== null ? urlLink : props.currentRecipe.imageURL,
       userId: props.currentRecipe.userId,
       categories: recipeCategories,
+      favorite: props.currentRecipe.favorite,
     };
 
     const updateTarget = doc(db, "recipes", props.currentRecipe.id);
@@ -129,7 +132,7 @@ export function EditRecipePage(props: EditRecipeProps) {
     }
   }
 
-  function handleToggle(position: number) {
+  function handleSelectCategories(position: number) {
     const updatedChecked = checked.map((element, index) =>
       index === position ? !element : element
     );
@@ -224,7 +227,7 @@ export function EditRecipePage(props: EditRecipeProps) {
                     secondaryAction={
                       <Checkbox
                         edge="end"
-                        onChange={() => handleToggle(index)}
+                        onChange={() => handleSelectCategories(index)}
                         checked={checked[index]}
                       />
                     }
@@ -264,7 +267,7 @@ export function EditRecipePage(props: EditRecipeProps) {
               recipeDuration === "" ||
               recipeIngredients === "" ||
               recipeDescription === "" ||
-              found === undefined ||
+              areCategoriesSelected === undefined ||
               isLoading
             }
           >
