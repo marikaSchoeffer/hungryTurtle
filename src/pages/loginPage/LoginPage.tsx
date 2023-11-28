@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
@@ -12,7 +12,11 @@ import {
 } from "@mui/material";
 import { IconButton } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { User, signInWithEmailAndPassword } from "firebase/auth";
+import {
+  User,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+} from "firebase/auth";
 
 import { primaryColor } from "../../style";
 import { forgotPasswordRoute, overviewRoute } from "../routes";
@@ -29,6 +33,21 @@ export function LoginPage(props: LoginPageProps) {
   const [isFormInvalid, setIsFormInvalid] = useState(false);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    handleReload();
+  }, []);
+
+  function handleReload() {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        props.setUser(auth.currentUser);
+        navigate(overviewRoute);
+      } else {
+        console.log("abgemeldet");
+      }
+    });
+  }
 
   async function loginEmailPassword() {
     try {
