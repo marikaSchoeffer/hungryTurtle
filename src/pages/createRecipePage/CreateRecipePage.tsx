@@ -39,6 +39,7 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
   const [recipeIngredients, setRecipeIngredients] = useState("");
   const [recipeDescription, setRecipeDescription] = useState("");
   const [imageUpload, setImageUpload] = useState<File | null>(null);
+  const [thumbnail, setThumbnail] = useState<Blob | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [checked, setChecked] = useState<boolean[]>(
     new Array(categories.length).fill(false)
@@ -51,17 +52,24 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
 
   async function handleClickCreateRecipe() {
     let urlLink = "";
+    let urlLinkThumbnail = "";
     let recipeCategories: string[] = [];
 
     setIsLoading(true);
 
-    if (imageUpload !== null) {
+    if (imageUpload !== null && thumbnail !== null) {
       const imageRefName = createGuid();
       const imageRef = ref(storage, imageRefName);
+
+      const thumbnailRefName = createGuid();
+      const thumbnailRef = ref(storage, thumbnailRefName);
 
       try {
         await uploadBytes(imageRef, imageUpload);
         urlLink = await getDownloadURL(ref(storage, imageRefName));
+
+        await uploadBytes(thumbnailRef, thumbnail);
+        urlLinkThumbnail = await getDownloadURL(ref(storage, thumbnailRefName));
       } catch (error) {
         console.log(error);
       }
@@ -83,6 +91,7 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
       description: recipeDescription,
       deleted: false,
       imageURL: urlLink,
+      thumbnailURL: urlLinkThumbnail,
       userId: props.user !== null ? props.user.uid : "",
       categories: recipeCategories,
       favorite: [],
@@ -145,7 +154,12 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
           <input type="file" accept="image/*" onChange={handleOnChangeFile} />
 
           {imageUpload !== null ? (
-            <Canvas width={300} height={400} imageUpload={imageUpload} />
+            <Canvas
+              width={300}
+              height={400}
+              imageUpload={imageUpload}
+              setThumbnail={setThumbnail}
+            />
           ) : null}
 
           <TextField
@@ -238,6 +252,7 @@ export function CreateRecipePage(props: CreateRecipePageProps) {
               recipeIngredients === "" ||
               recipeDescription === "" ||
               areCategoriesSelected === undefined ||
+              thumbnail === null ||
               isLoading
             }
           >
