@@ -28,11 +28,10 @@ export function RecipePreview(props: RecipePreviewProps) {
         <Card sx={{ width: "300px" }}>
           <CardMedia
             component="img"
-            //ThumbnailURL must be adressed here!!!
             image={
-              props.recipe.imageURL === ""
+              props.recipe.thumbnailURL === ""
                 ? "./image/hungryTurtle.png"
-                : props.recipe.imageURL
+                : props.recipe.thumbnailURL
             }
             height="100px"
           />

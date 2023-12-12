@@ -30,7 +30,7 @@ export function MigrationPage() {
 
     for (let i = 0; i < recipes.length; i++) {
       await updateDoc(doc(db, "recipes", recipes[i].id), {
-        thumbnailURl: "",
+        thumbnailURL: "",
       });
     }
   }
