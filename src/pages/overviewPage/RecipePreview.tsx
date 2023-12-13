@@ -25,13 +25,13 @@ export function RecipePreview(props: RecipePreviewProps) {
           textDecoration: "inherit",
         }}
       >
-        <Card sx={{ width: "300px" }}>
+        <Card sx={{ width: "295px" }}>
           <CardMedia
             component="img"
             image={
-              props.recipe.imageURL === ""
+              props.recipe.thumbnailURL === ""
                 ? "./image/hungryTurtle.png"
-                : props.recipe.imageURL
+                : props.recipe.thumbnailURL
             }
             height="100px"
           />

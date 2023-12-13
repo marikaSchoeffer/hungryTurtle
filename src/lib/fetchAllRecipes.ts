@@ -29,6 +29,7 @@ export async function fetchAllRecipes(
       description: doc.data().description,
       deleted: doc.data().deleted,
       imageURL: doc.data().imageURL,
+      thumbnailURL: doc.data().thumbnailURL,
       userId: doc.data().userId,
       categories: doc.data().categories,
       favorite: doc.data().favorite,

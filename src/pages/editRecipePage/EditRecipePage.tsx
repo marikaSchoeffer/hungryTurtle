@@ -30,6 +30,7 @@ import { Recipe } from "../../types/Recipe";
 import { overviewRoute, recipeRoute } from "../routes";
 import { createGuid } from "../../lib/createGuid";
 import { categories } from "../../types/Categories";
+import { Canvas } from "../canvasPage/Canvas";
 
 type EditRecipeProps = {
   currentRecipe: Recipe;
@@ -42,6 +43,7 @@ export function EditRecipePage(props: EditRecipeProps) {
   const [recipeIngredients, setRecipeIngredients] = useState("");
   const [recipeDescription, setRecipeDescription] = useState("");
   const [imageUpload, setImageUpload] = useState<File | null>(null);
+  const [thumbnail, setThumbnail] = useState<Blob | null>(null);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [checked, setChecked] = useState<boolean[]>(
@@ -65,17 +67,24 @@ export function EditRecipePage(props: EditRecipeProps) {
 
   async function handleClickEditRecipe() {
     let urlLink = "";
+    let urlLinkThumbnail = "";
     let recipeCategories: string[] = [];
 
     setIsLoading(true);
 
-    if (imageUpload !== null) {
+    if (imageUpload !== null && thumbnail !== null) {
       const imageRefName = createGuid();
       const imageRef = ref(storage, imageRefName);
+
+      const thumbnailRefName = createGuid();
+      const thumbnailRef = ref(storage, thumbnailRefName);
 
       try {
         await uploadBytes(imageRef, imageUpload);
         urlLink = await getDownloadURL(ref(storage, imageRefName));
+
+        await uploadBytes(thumbnailRef, thumbnail);
+        urlLinkThumbnail = await getDownloadURL(ref(storage, thumbnailRefName));
       } catch (error) {
         console.log(error);
       }
@@ -95,6 +104,10 @@ export function EditRecipePage(props: EditRecipeProps) {
       description: recipeDescription,
       deleted: false,
       imageURL: imageUpload !== null ? urlLink : props.currentRecipe.imageURL,
+      thumbnailURL:
+        thumbnail !== null
+          ? urlLinkThumbnail
+          : props.currentRecipe.thumbnailURL,
       userId: props.currentRecipe.userId,
       categories: recipeCategories,
       favorite: props.currentRecipe.favorite,
@@ -171,6 +184,16 @@ export function EditRecipePage(props: EditRecipeProps) {
       >
         <Box display="flex" flexDirection="column" width="100%" rowGap="20px">
           <input type="file" accept="image/*" onChange={handleOnChangeFile} />
+
+          {imageUpload !== null ? (
+            <Canvas
+              width={300}
+              height={400}
+              imageUpload={imageUpload}
+              setThumbnail={setThumbnail}
+            />
+          ) : null}
+
           <TextField
             variant="outlined"
             label="Rezepttitel"

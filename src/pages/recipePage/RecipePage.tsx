@@ -64,19 +64,19 @@ export function RecipePage(props: RecipePageProps) {
     }
 
     let updateRecipe = structuredClone(props.currentRecipe);
-    let updateArray = structuredClone(props.currentRecipe.favorite);
+    let updateFavorite = structuredClone(props.currentRecipe.favorite);
 
-    if (updateArray.includes(props.user.uid)) {
-      const index = updateArray.indexOf(props.user.uid);
-      updateArray.splice(index, 1);
+    if (updateFavorite.includes(props.user.uid)) {
+      const index = updateFavorite.indexOf(props.user.uid);
+      updateFavorite.splice(index, 1);
     } else {
-      updateArray.push(props.user.uid);
+      updateFavorite.push(props.user.uid);
     }
 
     const updateTarget = doc(db, "recipes", props.currentRecipe.id);
-    await updateDoc(updateTarget, { favorite: updateArray });
+    await updateDoc(updateTarget, { favorite: updateFavorite });
 
-    updateRecipe.favorite = updateArray;
+    updateRecipe.favorite = updateFavorite;
 
     props.setCurrentRecipe(updateRecipe);
   }

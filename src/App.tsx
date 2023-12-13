@@ -30,6 +30,7 @@ let emptyRecipe: Recipe = {
   description: "",
   deleted: false,
   imageURL: "",
+  thumbnailURL: "",
   userId: "",
   categories: [],
   favorite: [],
