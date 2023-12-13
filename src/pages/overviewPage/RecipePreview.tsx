@@ -25,7 +25,7 @@ export function RecipePreview(props: RecipePreviewProps) {
           textDecoration: "inherit",
         }}
       >
-        <Card sx={{ width: "300px" }}>
+        <Card sx={{ width: "295px" }}>
           <CardMedia
             component="img"
             image={
