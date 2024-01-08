@@ -6,6 +6,7 @@ export type Recipe = {
   description: string;
   deleted: boolean;
   imageURL: string;
+  thumbnailURL: string;
   userId: string;
   categories: string[];
   favorite: string[];

@@ -20,6 +20,7 @@ export function MigrationPage() {
         description: doc.data().description,
         deleted: doc.data().deleted,
         imageURL: doc.data().imageURL,
+        thumbnailURL: doc.data().thumbnailURL,
         userId: doc.data().userId,
         categories: doc.data().categories,
         favorite: doc.data().favorite,
@@ -29,7 +30,7 @@ export function MigrationPage() {
 
     for (let i = 0; i < recipes.length; i++) {
       await updateDoc(doc(db, "recipes", recipes[i].id), {
-        favorite: [],
+        thumbnailURL: "",
       });
     }
   }
