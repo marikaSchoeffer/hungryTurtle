@@ -5,6 +5,7 @@ import ContentCutIcon from "@mui/icons-material/ContentCut";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 import { primaryColor } from "../../style";
+import { imageToBlob } from "../../lib/imageToBlob";
 
 type CanvasProps = {
   width: number;
@@ -71,25 +72,9 @@ export function Canvas(props: CanvasProps) {
       );
 
       const croppedImage = context?.getImageData(0, 0, rectWidth, rectHeight);
-      const croppedCanvas = document.createElement("canvas");
 
-      if (croppedCanvas !== undefined && croppedImage !== undefined) {
-        croppedCanvas.width = croppedImage?.width;
-        croppedCanvas.height = croppedImage?.height;
-
-        const contextCroppedCanvas = croppedCanvas.getContext("2d");
-
-        contextCroppedCanvas?.putImageData(croppedImage, 0, 0);
-        const dataURL = croppedCanvas.toDataURL();
-        const parts = dataURL.split(";base64,");
-        const imageType = parts[0].split(":")[1];
-        const decodedData = window.atob(parts[1]);
-        const unit8Array = new Uint8Array(decodedData.length);
-
-        for (let i = 0; i < decodedData.length; ++i) {
-          unit8Array[i] = decodedData.charCodeAt(i);
-        }
-        const blob = new Blob([unit8Array], { type: imageType });
+      if (croppedImage !== undefined) {
+        const blob = imageToBlob(croppedImage);
         props.setThumbnail(blob);
       }
     } else {
